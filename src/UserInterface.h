@@ -5,4 +5,6 @@
 #ifndef FOCUS_USERINTERFACE_H
 #define FOCUS_USERINTERFACE_H
 
+void drawGame();
+
 #endif //FOCUS_USERINTERFACE_H
