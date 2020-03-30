@@ -27,15 +27,16 @@ void set_red(square *s) {
 }
 /*TODO*/
 /*Make Function initialise Board*/
-
-/*TODO*/
-/*Make Function to initialise two stacks of different colors as chosen by the user*/
-
+Game init_board()
+{
+    /*
+    struct square **board = (struct square **) calloc(BOARD_SIZE, sizeof(struct square *));
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        board[i] = (struct square *) calloc(8, sizeof(struct square));
+    }*/
+}
 /*TODO*/
 /*Initialise Players*/
-
-/*TODO*/
-/*Make Function to peek the top of a stack*/
 
 /*TODO*/
 /*Make Function to delete the cells at the bottom of a stack*/

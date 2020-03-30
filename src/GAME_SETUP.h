@@ -4,7 +4,7 @@
 
 #ifndef FOCUS_GAME_SETUP_H
 #define FOCUS_GAME_SETUP_H
-
+#define BOARD_SIZE 8
 /*Defines a set of Colors users can choose from*/
 typedef enum {
     RED,
@@ -20,7 +20,7 @@ typedef struct player {
 
 /*Stack datastructure based on a linked list*/
 typedef struct piece_node {
-    Colour *colour;
+    Colour colour;
     struct piece_node *next;
 } piece_node;
 
@@ -30,5 +30,12 @@ typedef struct square {
     /* marks top of the stack*/
     piece_node *head;
 } square;
+typedef struct Game
+{
+    square **board;
+
+}Game;
+
+Game init_board();
 
 #endif //FOCUS_GAME_SETUP_H

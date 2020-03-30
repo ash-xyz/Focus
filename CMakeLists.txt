@@ -18,5 +18,5 @@ include_directories(${CURSES_INCLUDE_DIR})
 if (NOT CURSES_HAVE_CURSES_H AND CURSES_HAVE_NCURSES_CURSES_H)
     include_directories(${CURSES_INCLUDE_DIR}/ncurses)
 endif ()
-
+set(CURSES_NEED_WIDE TRUE)
 target_link_libraries(Focus ${CURSES_LIBRARIES})

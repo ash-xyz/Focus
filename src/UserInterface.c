@@ -2,32 +2,32 @@
 // Created by ashraf on 25/03/2020.
 //
 #include <ncurses.h>
+#include <unistd.h>
+
+#define DELAY 3000
 
 void drawGame() {
-    int ch;
 
-    initscr();            /* Start curses mode 		*/
-    raw();                /* Line buffering disabled	*/
-    keypad(stdscr, TRUE);        /* We get F1, F2 etc..		*/
-    noecho();            /* Don't echo() while we do getch */
+    int x = 0, y = 0;
+    int max_y = 0, max_x = 0;
+    int next_x = 0;
+    int direction = 1;
 
-    printw("Type any character to see it in bold\n");
-    ch = getch();            /* If raw() hadn't been called
-					 * we have to press enter before it
-					 * gets to the program 		*/
-    if (ch == KEY_F(1))        /* Without keypad enabled this will */
-        printw("F1 Key pressed");/*  not get to us either	*/
-        /* Without noecho() some ugly escape
-         * charachters might have been printed
-         * on screen			*/
-    else {
-        printw("The pressed key is ");
-        attron(A_BOLD);
-        printw("%c", ch);
-        attroff(A_BOLD);
+    initscr();
+    noecho();
+    curs_set(FALSE);
+
+    // Global var `stdscr` is created by the call to `initscr()`
+    getmaxyx(stdscr, max_y, max_x);
+
+    while(1) {
+        clear();
+        mvprintw(y, x, "╀");
+        refresh();
+
+        usleep(DELAY);
+
     }
-    refresh();            /* Print it on to the real screen */
-    getch();            /* Wait for user input */
-    endwin();            /* End curses mode		  */
 
+    endwin();
 }
