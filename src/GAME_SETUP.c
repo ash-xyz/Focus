@@ -27,17 +27,49 @@ void set_red(square *s) {
 }
 /*TODO*/
 /*Make Function initialise Board*/
-Game init_board()
-{
-    /*
-    struct square **board = (struct square **) calloc(BOARD_SIZE, sizeof(struct square *));
+void init_board(square **board) {
+    board = (struct square **) calloc(BOARD_SIZE, sizeof(struct square *));
     for (int i = 0; i < BOARD_SIZE; i++) {
         board[i] = (struct square *) calloc(8, sizeof(struct square));
-    }*/
+    }
+
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            /*
+            //invalid squares
+            if((i==0 && (j==0 || j==1 || j==6 || j==7)) ||
+               (i==1 && (j==0 || j==7)) ||
+               (i==6 && (j==0 || j==7)) ||
+               (i==7 && (j==0 || j==1 || j==6 || j==7)))
+                set_invalid(&game.board[i][j]);*/
+
+            //squares with no pieces
+            if (i == 0 || i == 7 || j == 0 || j == 7)
+                set_empty(&board[i][j]);
+            else {
+                //squares with red pieces
+                if ((i % 2 == 1 && (j < 3 || j > 4)) ||
+                    (i % 2 == 0 && (j == 3 || j == 4)))
+                    set_red(&board[i][j]);
+                    //green squares
+                else set_green(&board[i][j]);
+            }
+        }
+    }
 }
 /*TODO*/
 /*Initialise Players*/
+void init_player(Game* game, int playerNum)
+{
+}
+Game init_game()
+{
+    Game game;
+    init_board(game.board);
 
-/*TODO*/
-/*Make Function to delete the cells at the bottom of a stack*/
-
+    for(int i = 0; i < 2;++i)
+    {
+        init_player(&game,i);
+    }
+    return game;
+}
