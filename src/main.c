@@ -4,7 +4,8 @@
 #include <locale.h>
 int main() {
     setlocale(LC_ALL, "");
-    Game game = init_board();
-    drawGame();
+
+    Game game = init_game();
+    print_board(game);
     return 0;
 }
