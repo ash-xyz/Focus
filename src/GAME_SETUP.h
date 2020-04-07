@@ -5,7 +5,7 @@
 #ifndef FOCUS_GAME_SETUP_H
 #define FOCUS_GAME_SETUP_H
 #define BOARD_SIZE 8
-
+#define PLAYER_NUM 2
 
 /*Defines a set of Colors users can choose from*/
 typedef enum {
@@ -45,7 +45,7 @@ typedef struct square {
 
 typedef struct Game {
     square board[BOARD_SIZE][BOARD_SIZE];
-    Player player[2];
+    Player player[PLAYER_NUM];
 } Game;
 
 Game init_game();

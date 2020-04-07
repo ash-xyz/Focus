@@ -5,4 +5,6 @@
 #ifndef FOCUS_GAME_H
 #define FOCUS_GAME_H
 
+#include "GAME_SETUP.h"
+
 #endif //FOCUS_GAME_H
