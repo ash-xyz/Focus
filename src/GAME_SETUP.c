@@ -65,23 +65,22 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
 /*TODO*/
 /*Initialise Players*/
 void init_player(Game *game, int playerNum) {
-
-
     game->player[playerNum].numOfPieces = 0;
     game->player[playerNum].opponentPieces = 0;
 }
 
 Game init_game() {
-    /*stdscr = initscr();
+    stdscr = initscr();
     noecho();
     start_color();
     keypad(stdscr, true);
 
     init_pair(RED, COLOR_RED, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
-*/
+    drawLogo();//TODO Add functionality to draw board
     Game game;
     init_board(game.board);
+    getch();//TODO remove later
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
     }
