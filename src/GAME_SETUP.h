@@ -9,7 +9,7 @@
 
 /*Defines a set of Colors users can choose from*/
 typedef enum {
-    RED,
+    RED = 1,
     GREEN
 } Colour;
 
@@ -19,7 +19,7 @@ typedef enum {
 typedef enum square_type {
     VALID,
     INVALID
-}square_type;
+} square_type;
 
 typedef struct Player {
     char player_name[20];
