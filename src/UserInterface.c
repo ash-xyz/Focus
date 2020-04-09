@@ -4,10 +4,11 @@
 #include "UserInterface.h"
 
 void drawLogo() {
-    int maxScreenY, maxScreenX;
-    getmaxyx(stdscr, maxScreenY, maxScreenX);
-    WINDOW *logo = newwin(8, 50, 0, maxScreenX / 2 - 25);
+    int maxScreenX = getmaxx(stdscr);
+
+    WINDOW *logo = newwin(LOGO_HEIGHT, LOGO_WIDTH, 0, maxScreenX / 2 - LOGO_WIDTH / 2);
     refresh();
+
     wprintw(logo, " /$$$$$$$$                                     \n"
                   "| $$_____/                                     \n"
                   "| $$     /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$$\n"
@@ -17,4 +18,32 @@ void drawLogo() {
                   "| $$   |  $$$$$$/|  $$$$$$$|  $$$$$$/ /$$$$$$$/\n"
                   "|__/    \\______/  \\_______/ \\______/ |_______/");
     wrefresh(logo);
+}
+
+void promptName(char playername[], int i) {
+
+    /*Gets screen Sizes*/
+    int maxScreenY, maxScreenX;
+    getmaxyx(stdscr, maxScreenY, maxScreenX);
+    /*Declares screen*/
+    WINDOW *promptWin = newwin(PROMPT_HEIGHT, PROMPT_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - PROMPT_WIDTH / 2);
+
+    refresh();
+
+    box(promptWin, 0, 0);
+    wrefresh(promptWin);
+
+    mvwaddstr(promptWin, 2, 2, "Enter your name: ");
+
+    echo();
+    wattron(promptWin, A_STANDOUT);
+
+    wgetstr(promptWin, playername);
+
+    noecho();
+    wattroff(promptWin, A_STANDOUT);
+
+    werase(promptWin);
+    wrefresh(promptWin);
+    delwin(promptWin);
 }
