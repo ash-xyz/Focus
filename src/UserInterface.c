@@ -32,13 +32,13 @@ void promptName(char playername[], int i) {
 
     box(promptWin, 0, 0);
     wrefresh(promptWin);
-
+    mvwprintw(promptWin, 1, 2, "Player %d,", i + 1);
     mvwaddstr(promptWin, 2, 2, "Enter your name: ");
 
     echo();
     wattron(promptWin, A_STANDOUT);
 
-    wgetnstr(promptWin, playername, sizeof(playername));
+    wgetstr(promptWin, playername);
 
     noecho();
     wattroff(promptWin, A_STANDOUT);

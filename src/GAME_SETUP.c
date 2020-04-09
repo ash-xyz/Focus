@@ -66,10 +66,10 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
 /*Initialise Players*/
 void init_player(Game *game, int playerNum) {
     promptName(game->player[playerNum].player_name, playerNum);
-    printw("%s",game->player[playerNum].player_name);
-    getch();
-    game->player[playerNum].numOfPieces = 0;
-    game->player[playerNum].opponentPieces = 0;
+    printw("%s", game->player[playerNum].player_name);
+    game->player[playerNum].colour = playerNum == 0 ? RED : GREEN;//Sets player colour
+    game->player[playerNum].numOfPieces = 0;//Sets the initial number of pieces a player has
+    game->player[playerNum].opponentPieces = 0;//Sets the initial number of opponent
 }
 
 Game init_game() {
@@ -88,5 +88,7 @@ Game init_game() {
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
     }
+
+    getch();
     return game;
 }
