@@ -38,7 +38,7 @@ void promptName(char playername[], int i) {
     echo();
     wattron(promptWin, A_STANDOUT);
 
-    wgetstr(promptWin, playername);
+    wgetnstr(promptWin, playername, sizeof(playername));
 
     noecho();
     wattroff(promptWin, A_STANDOUT);
