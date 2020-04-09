@@ -72,6 +72,7 @@ void init_player(Game *game, int playerNum) {
 Game init_game() {
     stdscr = initscr();
     noecho();
+    cbreak();
     start_color();
     keypad(stdscr, true);
 
