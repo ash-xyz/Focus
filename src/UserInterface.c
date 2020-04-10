@@ -23,8 +23,7 @@ void drawLogo() {
 void promptName(char playername[], int i) {
 
     /*Gets screen Sizes*/
-    int maxScreenY, maxScreenX;
-    getmaxyx(stdscr, maxScreenY, maxScreenX);
+    int maxScreenX = getmaxx(stdscr);
     /*Declares screen*/
     WINDOW *promptWin = newwin(PROMPT_HEIGHT, PROMPT_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - PROMPT_WIDTH / 2);
 
@@ -38,7 +37,7 @@ void promptName(char playername[], int i) {
     echo();
     wattron(promptWin, A_STANDOUT);
 
-    wgetstr(promptWin, playername);
+    wgetnstr(promptWin, playername, 19);
 
     noecho();
     wattroff(promptWin, A_STANDOUT);
