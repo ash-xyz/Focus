@@ -57,19 +57,21 @@ void promptName(char playername[], int i) {
 
 void colorCell(WINDOW *win, int locX, int locY, Colour colour) {
 
-    wattron(win,COLOR_PAIR(colour));
+    wattron(win, COLOR_PAIR(colour));
     for (int i = 0; i < 3; i++) {
 
-        mvwhline(win, locY + i, locX, '#', 5);
+        //mvwhline(win, locY + i, locX, '#', 5);
+        mvwprintw(win, locY + i, locX, "█████");
     }
-    wattroff(win,COLOR_PAIR(colour));
+    wattroff(win, COLOR_PAIR(colour));
 }
 
-void drawBoard() {
+void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]) {
+    
     int maxScreenX = getmaxx(stdscr);
-    WINDOW *board = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
+    WINDOW *boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
     refresh();
-    wprintw(board,
+    wprintw(boardWin,
             "                ╔═══════╦═══════╦═══════╦═══════╗                "
             "                ║       ║       ║       ║       ║                "
             "                ║       ║       ║       ║       ║                "
@@ -103,8 +105,15 @@ void drawBoard() {
             "                ║       ║       ║       ║       ║                "
             "                ║       ║       ║       ║       ║                "
             "                ╚═══════╩═══════╩═══════╩═══════╝                ");
-    colorCell(board, 18, 1, RED);
-    wrefresh(board);
+    colorCell(boardWin, 18, 1, RED);
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board[i][j].type != INVALID) {
+                colorCell(boardWin, 2 + 8 * i, 1 + 4 * j, RED);
+            }
+        }
+    }
+    wrefresh(boardWin);
     getch();
-    delwin(board);
+    delwin(boardWin);
 }

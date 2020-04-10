@@ -86,7 +86,7 @@ Game init_game() {
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
     }
-    drawBoard();
+    drawBoard(game.board);
     getch();
     return game;
 }
