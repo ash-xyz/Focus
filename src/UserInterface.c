@@ -28,16 +28,24 @@ void promptName(char playername[], int i) {
     WINDOW *promptWin = newwin(PROMPT_HEIGHT, PROMPT_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - PROMPT_WIDTH / 2);
 
     refresh();
-
-    box(promptWin, 0, 0);
     wrefresh(promptWin);
-    mvwprintw(promptWin, 1, 2, "Player %d,", i + 1);
-    mvwaddstr(promptWin, 2, 2, "Enter your name: ");
+    wprintw(promptWin, "   ______________________________\n"
+                       " / \\                             \\.\n"
+                       "|   |     Welcome, player %d!     |.\n"
+                       " \\_ |                            |.\n"
+                       "    |      Enter your name:      |.\n"
+                       "    |                            |.\n"
+                       "    |      ~~~~~~~~~~~~~~~~~     |.\n"
+                       "    |                            |.\n"
+                       "    |   _________________________|___\n"
+                       "    |  /                            /.\n"
+                       "    \\_/____________________________/.", i + 1);
+
 
     echo();
     wattron(promptWin, A_STANDOUT);
 
-    wgetnstr(promptWin, playername, 19);
+    mvwgetnstr(promptWin, 6, 11, playername, 19);
 
     noecho();
     wattroff(promptWin, A_STANDOUT);
@@ -45,4 +53,58 @@ void promptName(char playername[], int i) {
     werase(promptWin);
     wrefresh(promptWin);
     delwin(promptWin);
+}
+
+void colorCell(WINDOW *win, int locX, int locY, Colour colour) {
+
+    wattron(win,COLOR_PAIR(colour));
+    for (int i = 0; i < 3; i++) {
+
+        mvwhline(win, locY + i, locX, '#', 5);
+    }
+    wattroff(win,COLOR_PAIR(colour));
+}
+
+void drawBoard() {
+    int maxScreenX = getmaxx(stdscr);
+    WINDOW *board = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
+    refresh();
+    wprintw(board,
+            "                ╔═══════╦═══════╦═══════╦═══════╗                "
+            "                ║       ║       ║       ║       ║                "
+            "                ║       ║       ║       ║       ║                "
+            "                ║       ║       ║       ║       ║                "
+            "        ╔═══════╬═══════╬═══════╬═══════╬═══════╬═══════╗        "
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "╔═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╗"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "╠═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╣"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "╠═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╣"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "╠═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╣"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "║       ║       ║       ║       ║       ║       ║       ║       ║"
+            "╚═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╬═══════╝"
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "        ║       ║       ║       ║       ║       ║       ║        "
+            "        ╚═══════╬═══════╬═══════╬═══════╬═══════╬═══════╝        "
+            "                ║       ║       ║       ║       ║                "
+            "                ║       ║       ║       ║       ║                "
+            "                ║       ║       ║       ║       ║                "
+            "                ╚═══════╩═══════╩═══════╩═══════╝                ");
+    colorCell(board, 18, 1, RED);
+    wrefresh(board);
+    getch();
+    delwin(board);
 }

@@ -11,10 +11,14 @@
 #define LOGO_HEIGHT 8
 #define LOGO_WIDTH 50
 
-#define PROMPT_HEIGHT 5
+#define PROMPT_HEIGHT 12
 #define PROMPT_WIDTH 40
+
+#define BOARD_WIDTH 65
+#define BOARD_HEIGHT 33
 
 void drawLogo();
 void promptName(char playername[], int i);
+void drawBoard();
 
 #endif //FOCUS_USERINTERFACE_H
