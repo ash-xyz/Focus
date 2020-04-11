@@ -66,11 +66,9 @@ void colorCell(WINDOW *win, int locX, int locY, Colour colour) {
     wattroff(win, COLOR_PAIR(colour));
 }
 
-void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]) {
+void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int x, int y) {
+    wclear(boardWin);
 
-    int maxScreenX = getmaxx(stdscr);
-    WINDOW *boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
-    refresh();
     wprintw(boardWin,
             "                ╔═══════╦═══════╦═══════╦═══════╗                "
             "                ║       ║       ║       ║       ║                "
@@ -113,6 +111,6 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]) {
             }
         }
     }
+    colorCell(boardWin, 2 + 8 * x, 1 + 4 * y, COLOR_BLACK);
     wrefresh(boardWin);
-    delwin(boardWin);
 }

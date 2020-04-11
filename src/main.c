@@ -6,7 +6,7 @@
 
 int main() {
     setlocale(LC_ALL, "");
-
     Game game = init_game();
+    run_game(&game);
     return 0;
 }

@@ -19,6 +19,6 @@
 
 void drawLogo();
 void promptName(char playername[], int i);
-void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]);
+void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int x, int y);
 
 #endif //FOCUS_USERINTERFACE_H

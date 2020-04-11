@@ -7,4 +7,6 @@
 
 #include "GAME_SETUP.h"
 
+void run_game(Game *game);
+
 #endif //FOCUS_GAME_H
