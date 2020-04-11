@@ -51,10 +51,10 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
             //squares with no pieces
             if (i == 0 || i == 7 || j == 0 || j == 7)
                 set_empty(&board[i][j]);
-            else {
+            else{
                 //squares with red pieces
-                if ((i % 2 == 1 && (j < 3 || j > 4)) ||
-                    (i % 2 == 0 && (j == 3 || j == 4)))
+                if((i%2 == 1 && (j < 3 || j> 4)) ||
+                   (i%2 == 0 && (j == 3 || j==4)))
                     set_red(&board[i][j]);
                     //green squares
                 else set_green(&board[i][j]);

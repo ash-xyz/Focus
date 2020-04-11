@@ -55,18 +55,16 @@ void promptName(char playername[], int i) {
     delwin(promptWin);
 }
 
-void colorCell(WINDOW *win, int locX, int locY, Colour colour) {
+void colorCell(WINDOW *win, int locY, int locX, Colour colour) {
 
     wattron(win, COLOR_PAIR(colour));
     for (int i = 0; i < 3; i++) {
-
-        //mvwhline(win, locY + i, locX, '#', 5);
         mvwprintw(win, locY + i, locX, "█████");
     }
     wattroff(win, COLOR_PAIR(colour));
 }
 
-void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int x, int y) {
+void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int y, int x) {
     wclear(boardWin);
 
     wprintw(boardWin,
@@ -104,13 +102,26 @@ void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int x, in
             "                ║       ║       ║       ║       ║                "
             "                ╚═══════╩═══════╩═══════╩═══════╝                ");
 
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            if (board[i][j].type == VALID && board[i][j].head != NULL) {
-                colorCell(boardWin, 2 + 8 * i, 1 + 4 * j, board[i][j].head->colour);
+    for (int locY = 0; locY < BOARD_SIZE; locY++) {
+        for (int locX = 0; locX < BOARD_SIZE; locX++) {
+            if (board[locY][locX].type == VALID && board[locY][locX].head != NULL) {
+                colorCell(boardWin, 1 + 4 * locY, 2 + 8 * locX, board[locY][locX].head->colour);
             }
         }
     }
-    colorCell(boardWin, 2 + 8 * x, 1 + 4 * y, COLOR_BLACK);
+    colorCell(boardWin, 1 + 4 * y, 2 + 8 * x, COLOR_BLACK);
     wrefresh(boardWin);
+}
+
+void drawStack(WINDOW *stackWin, square *piece) {
+    wclear(stackWin);
+    box(stackWin, 0, 0);
+    piece_node *pointer = piece->head;
+    for (int i = piece->height; i > 0; i--) {
+        wattron(stackWin, COLOR_PAIR(pointer->colour));
+        mvwprintw(stackWin, i, 1, "█████");
+        wattroff(stackWin, COLOR_PAIR(pointer->colour));
+        pointer = pointer->next;
+    }
+    wrefresh(stackWin);
 }
