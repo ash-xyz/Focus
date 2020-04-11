@@ -67,7 +67,7 @@ void colorCell(WINDOW *win, int locX, int locY, Colour colour) {
 }
 
 void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]) {
-    
+
     int maxScreenX = getmaxx(stdscr);
     WINDOW *boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
     refresh();
@@ -105,15 +105,14 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE]) {
             "                ║       ║       ║       ║       ║                "
             "                ║       ║       ║       ║       ║                "
             "                ╚═══════╩═══════╩═══════╩═══════╝                ");
-    colorCell(boardWin, 18, 1, RED);
+
     for (int i = 0; i < BOARD_SIZE; i++) {
         for (int j = 0; j < BOARD_SIZE; j++) {
-            if (board[i][j].type != INVALID) {
-                colorCell(boardWin, 2 + 8 * i, 1 + 4 * j, RED);
+            if (board[i][j].type == VALID && board[i][j].head != NULL) {
+                colorCell(boardWin, 2 + 8 * i, 1 + 4 * j, board[i][j].head->colour);
             }
         }
     }
     wrefresh(boardWin);
-    getch();
     delwin(boardWin);
 }
