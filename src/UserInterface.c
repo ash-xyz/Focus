@@ -109,7 +109,11 @@ void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState
             }
         }
     }
-    colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK);
+    colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK);// Colours the position our cursor is at
+    if(state.selected == true)
+    {
+        colorCell(boardWin, 1 + 4 * state.selectedY, 2 + 8 * state.selectedX, BLUE);
+    }
     wrefresh(boardWin);
 }
 
