@@ -41,10 +41,7 @@ bool checkValidLeft(GameState *state) {
     return true;
 }
 
-void run_game(game *game) {
-
-    refresh();
-
+void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
     state.player1Top = state.player2Top = 18;

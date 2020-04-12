@@ -6,7 +6,7 @@
 #include "UserInterface.h"
 
 /*
- * This file aims to contain utility functions for the game.
+ * This file aims to contain utility functions for the Game.
  * */
 void set_empty(square *s) {
     s->type = VALID;
@@ -64,14 +64,14 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
 }
 /*TODO*/
 /*Initialise Players*/
-void init_player(game *game, int playerNum) {
+void init_player(Game *game, int playerNum) {
     promptName(game->player[playerNum].player_name, playerNum);
     game->player[playerNum].colour = playerNum == 0 ? RED : GREEN;//Sets player colour
     game->player[playerNum].numOfPieces = 0;//Sets the initial number of pieces a player has
     game->player[playerNum].opponentPieces = 0;//Sets the initial number of opponent
 }
 
-game init_game() {
+Game init_game() {
     stdscr = initscr();
     noecho();
     cbreak();
@@ -82,7 +82,7 @@ game init_game() {
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
     init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
     drawLogo();//Draws Logo onto the screen
-    game game;
+    Game game;
     init_board(game.board);
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
@@ -93,5 +93,6 @@ game init_game() {
     boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
     stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 1) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
                       maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
+    refresh();
     return game;
 }

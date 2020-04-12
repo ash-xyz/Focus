@@ -50,9 +50,9 @@ typedef struct square {
 typedef struct Game {
     square board[BOARD_SIZE][BOARD_SIZE];
     Player player[PLAYER_NUM];
-} game;
+} Game;
 
-/*Holds current game state*/
+/*Holds current Game state*/
 typedef struct GameState {
     int x;//Holds the current x coordinate
     int y;//Holds the current y coordinate
@@ -66,6 +66,6 @@ typedef struct GameState {
     int player2Top;//Holds how many pieces player 2 has on top
 } GameState;
 
-game init_game();
+Game init_game();
 
 #endif //FOCUS_GAME_SETUP_H
