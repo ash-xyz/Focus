@@ -64,7 +64,7 @@ void colorCell(WINDOW *win, int locY, int locX, Colour colour) {
     wattroff(win, COLOR_PAIR(colour));
 }
 
-void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int y, int x) {
+void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     wclear(boardWin);
 
     wprintw(boardWin,
@@ -109,7 +109,7 @@ void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int y, in
             }
         }
     }
-    colorCell(boardWin, 1 + 4 * y, 2 + 8 * x, COLOR_BLACK);
+    colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK);
     wrefresh(boardWin);
 }
 

@@ -3,42 +3,50 @@
 //
 #include "GAME.h"
 #include "UserInterface.h"
-
-void run_game(Game *game) {
+#include <stdlib.h>
+void run_game(game *game) {
     int maxScreenX = getmaxx(stdscr);
     WINDOW *boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
-    WINDOW *stackWin = newwin(BOARD_HEIGHT, 10, LOGO_HEIGHT + 1, maxScreenX / 2 + BOARD_WIDTH / 2 + 1);
+    WINDOW *stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 1) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
+                              maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
     refresh();
 
-    int x = 4, y = 4;
-    drawBoard(boardWin, game->board, y, x);
-    drawStack(stackWin, &game->board[y][x]);
+    GameState state;
+    state.x = 4;
+    state.y = 4;
+    state.player1Top = 18;
+    state.player2Top = 18;
+    drawBoard(boardWin, game->board, state);
+    drawStack(stackWin, &game->board[state.y][state.x]);
     do {
         switch (getch()) {
             case KEY_UP:
-                y--;
-                drawBoard(boardWin, game->board, y, x);
+                state.y--;
+                drawBoard(boardWin, game->board, state);
+                drawStack(stackWin, &game->board[state.y][state.x]);
                 break;
             case KEY_DOWN:
-                y++;
-                drawBoard(boardWin, game->board, y, x);;
+                state.y++;
+                drawBoard(boardWin, game->board, state);;
+                drawStack(stackWin, &game->board[state.y][state.x]);
                 break;
             case KEY_LEFT:
-                x--;
-                drawBoard(boardWin, game->board, y, x);
+                state.x--;
+                drawBoard(boardWin, game->board, state);
+                drawStack(stackWin, &game->board[state.y][state.x]);
                 break;
             case KEY_RIGHT:
-                x++;
-                drawBoard(boardWin, game->board, y, x);
+                state.x++;
+                drawBoard(boardWin, game->board, state);
+                drawStack(stackWin, &game->board[state.y][state.x]);
                 break;
             case KEY_ENTER  :
-                x++;
+                state.x++;
                 break;
             default:
                 break;
         }
-        printw("y = %d, x = %d",y,x);
-    } while (x != -1);
+    } while (state.player2Top != 0);
 
     delwin(boardWin);
     delwin(stackWin);

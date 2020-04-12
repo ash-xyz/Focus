@@ -17,9 +17,12 @@
 #define BOARD_WIDTH 65
 #define BOARD_HEIGHT 33
 
+#define STACK_WIDTH 10
+#define STACK_HEIGHT 15
+
 void drawLogo();
 void promptName(char playername[], int i);
-void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], int y, int x);
+void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState state);
 void drawStack(WINDOW *stackWin, square *piece);
 
 #endif //FOCUS_USERINTERFACE_H

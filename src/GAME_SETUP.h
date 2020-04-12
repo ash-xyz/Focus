@@ -52,7 +52,7 @@ typedef struct Game {
 } game;
 
 /*Holds current game state*/
-typedef struct gameState {
+typedef struct GameState {
     int x;//Holds the current x coordinate
     int y;//Holds the current y coordinate
 
@@ -63,7 +63,7 @@ typedef struct gameState {
     /*Used for win condition*/
     int player1Top;//Holds how many pieces player 1 has on top
     int player2Top;//Holds how many pieces player 2 has on top
-} gameState;
+} GameState;
 
 game init_game();
 
