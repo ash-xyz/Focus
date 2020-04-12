@@ -4,6 +4,9 @@
 
 #ifndef FOCUS_GAME_SETUP_H
 #define FOCUS_GAME_SETUP_H
+
+#include "stdbool.h"
+
 #define BOARD_SIZE 8
 #define PLAYER_NUM 2
 
@@ -46,8 +49,22 @@ typedef struct square {
 typedef struct Game {
     square board[BOARD_SIZE][BOARD_SIZE];
     Player player[PLAYER_NUM];
-} Game;
+} game;
 
-Game init_game();
+/*Holds current game state*/
+typedef struct gameState {
+    int x;//Holds the current x coordinate
+    int y;//Holds the current y coordinate
+
+    bool selected;//Holds whether or not a piece has been selected
+    int selectedX;//Holds the current selected X piece
+    int selectedY;//Holds the current selected Y piece
+
+    /*Used for win condition*/
+    int player1Top;//Holds how many pieces player 1 has on top
+    int player2Top;//Holds how many pieces player 2 has on top
+} gameState;
+
+game init_game();
 
 #endif //FOCUS_GAME_SETUP_H
