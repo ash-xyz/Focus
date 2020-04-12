@@ -117,9 +117,10 @@ void drawStack(WINDOW *stackWin, square *piece) {
     wclear(stackWin);
     box(stackWin, 0, 0);
     piece_node *pointer = piece->head;
-    for (int i = piece->height; i > 0; i--) {
+
+    for (int i = 2*piece->height; i > 0; i-=2) {
         wattron(stackWin, COLOR_PAIR(pointer->colour));
-        mvwprintw(stackWin, i, 1, "█████");
+        mvwprintw(stackWin, STACK_HEIGHT - i, 1, "████████");
         wattroff(stackWin, COLOR_PAIR(pointer->colour));
         pointer = pointer->next;
     }
