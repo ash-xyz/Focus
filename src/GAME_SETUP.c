@@ -51,10 +51,10 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
             //squares with no pieces
             if (i == 0 || i == 7 || j == 0 || j == 7)
                 set_empty(&board[i][j]);
-            else{
+            else {
                 //squares with red pieces
-                if((i%2 == 1 && (j < 3 || j> 4)) ||
-                   (i%2 == 0 && (j == 3 || j==4)))
+                if ((i % 2 == 1 && (j < 3 || j > 4)) ||
+                    (i % 2 == 0 && (j == 3 || j == 4)))
                     set_red(&board[i][j]);
                     //green squares
                 else set_green(&board[i][j]);
@@ -80,12 +80,18 @@ game init_game() {
 
     init_pair(RED, COLOR_RED, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
-    init_pair(BLUE,COLOR_BLUE,COLOR_BLACK);
+    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
     drawLogo();//Draws Logo onto the screen
     game game;
     init_board(game.board);
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
     }
+
+    /*Initialises our board and stack window */
+    int maxScreenX = getmaxx(stdscr);
+    boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
+    stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 1) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
+                      maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
     return game;
 }

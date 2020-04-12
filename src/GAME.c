@@ -42,54 +42,50 @@ bool checkValidLeft(GameState *state) {
 }
 
 void run_game(game *game) {
-    int maxScreenX = getmaxx(stdscr);
-    WINDOW *boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 1, maxScreenX / 2 - BOARD_WIDTH / 2);
-    WINDOW *stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 1) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
-                              maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
+
     refresh();
 
     GameState state;
     state.x = state.y = 4;
     state.player1Top = state.player2Top = 18;
 
-    drawBoard(boardWin, game->board, state);
-    drawStack(stackWin, &game->board[state.y][state.x]);
+    drawBoard(game->board, state);
+    drawStack(&game->board[state.y][state.x]);
     do {
         switch (getch()) {
             case KEY_UP:
                 state.y--;
                 if (checkValidUp(&state)) {
-                    drawBoard(boardWin, game->board, state);
-                    drawStack(stackWin, &game->board[state.y][state.x]);
+                    drawBoard(game->board, state);
+                    drawStack(&game->board[state.y][state.x]);
                 }
-                printw("x:%d y:%d", state.x, state.y);
                 break;
             case KEY_DOWN:
                 state.y++;
                 if (checkValidDown(&state)) {
-                    drawBoard(boardWin, game->board, state);
-                    drawStack(stackWin, &game->board[state.y][state.x]);
+                    drawBoard(game->board, state);
+                    drawStack(&game->board[state.y][state.x]);
                 }
                 break;
             case KEY_LEFT:
                 state.x--;
                 if (checkValidLeft(&state)) {
-                    drawBoard(boardWin, game->board, state);
-                    drawStack(stackWin, &game->board[state.y][state.x]);
+                    drawBoard(game->board, state);
+                    drawStack(&game->board[state.y][state.x]);
                 }
                 break;
             case KEY_RIGHT:
                 state.x++;
                 if (checkValidRight(&state)) {
-                    drawBoard(boardWin, game->board, state);
-                    drawStack(stackWin, &game->board[state.y][state.x]);
+                    drawBoard(game->board, state);
+                    drawStack(&game->board[state.y][state.x]);
                 }
                 break;
             case 'f'  :
                 state.selectedX = state.x;
                 state.selectedY = state.y;
                 state.selected = true;
-                drawBoard(boardWin, game->board, state);
+                drawBoard(game->board, state);
                 break;
             default:
                 break;

@@ -64,7 +64,7 @@ void colorCell(WINDOW *win, int locY, int locX, Colour colour) {
     wattroff(win, COLOR_PAIR(colour));
 }
 
-void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
+void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     wclear(boardWin);
 
     wprintw(boardWin,
@@ -110,19 +110,18 @@ void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState
         }
     }
     colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK);// Colours the position our cursor is at
-    if(state.selected == true)
-    {
+    if (state.selected == true) {
         colorCell(boardWin, 1 + 4 * state.selectedY, 2 + 8 * state.selectedX, BLUE);
     }
     wrefresh(boardWin);
 }
 
-void drawStack(WINDOW *stackWin, square *piece) {
+void drawStack(square *piece) {
     wclear(stackWin);
     box(stackWin, 0, 0);
     piece_node *pointer = piece->head;
 
-    for (int i = 2*piece->height; i > 0; i-=2) {
+    for (int i = 2 * piece->height; i > 0; i -= 2) {
         wattron(stackWin, COLOR_PAIR(pointer->colour));
         mvwprintw(stackWin, STACK_HEIGHT - i, 1, "████████");
         wattroff(stackWin, COLOR_PAIR(pointer->colour));

@@ -20,9 +20,17 @@
 #define STACK_WIDTH 10
 #define STACK_HEIGHT 15
 
+/*Global Variables that contain the windows for our board and stack*/
+/*Initialised in GAME_SETUP.c, game_int*/
+WINDOW *boardWin;
+WINDOW *stackWin;
+
 void drawLogo();
+
 void promptName(char playername[], int i);
-void drawBoard(WINDOW *boardWin, square board[BOARD_SIZE][BOARD_SIZE], GameState state);
-void drawStack(WINDOW *stackWin, square *piece);
+
+void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state);
+
+void drawStack(square *piece);
 
 #endif //FOCUS_USERINTERFACE_H
