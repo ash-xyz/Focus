@@ -57,6 +57,12 @@ bool checkOwnedPlayer(Game *game, GameState *state) {
     return false;
 }
 
+bool validMove(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
+    int height = board[state.selectedY][state.selectedX].height;
+    int numOfMoves = abs(state.selectedX - state.x) + abs(state.selectedY - state.y);
+    return height >= numOfMoves;
+}
+
 void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
@@ -98,9 +104,14 @@ void run_game(Game *game) {
             case 'f'  :
                 if (state.selected == true) {
                     //TODO: Check that the move is valid (Use coordinates to do so)
-                    //TODO: move piece if it's valid,
-                    //TODO: alter number of player tops
-                    //TODO: change player turn
+                    if (validMove(game->board, state)) {
+                        printw("valid");
+                        //TODO: move piece if it's valid,
+                        //TODO: alter number of player tops
+                        //TODO: change player turn
+                    }
+                    else
+                        printw("not valid");
                 } else {
                     /*Checks if the piece is owned by the current player
                      * If so, it will highlight that piece and record the coordinates*/
