@@ -13,7 +13,8 @@
 /*Defines a set of Colors users can choose from*/
 typedef enum {
     RED = 1,
-    GREEN
+    GREEN,
+    BLUE
 } Colour;
 
 // Square types
