@@ -80,9 +80,9 @@ void trimStack(square *s, Player *player) {
             piece_node *temp = curNode;
             /*Increments the current pointer*/
             curNode = curNode->next;
-            /*If the player owns the piece, we increment their retained pieces(To be used for graveyard functionality)*/
+            /*If the player owns the piece, we increment their graveyard pieces(To be used for graveyard functionality)*/
             if (temp->colour == player->colour) {
-                player->retainedPieces++;
+                player->graveyardPieces++;
                 free(temp);
             } else {
                 player->capturedPieces++;
@@ -125,6 +125,31 @@ void updateGameState(GameState *state) {
     /*Makes selected pieces invalid*/
     state->selected = false;
     /*TODO: Output to text box the current players turn and their colour */
+}
+
+/*Resurrects a piece from a players graveyard*/
+bool resurrectPiece(Game *game, GameState *state) {
+    if (game->player[state->playerTurn].graveyardPieces > 0) {
+        /*Initialises a piece of the players color*/
+        piece_node *resurrectedPiece = (piece_node *) malloc(sizeof(piece_node));
+        resurrectedPiece->colour = game->player[state->playerTurn].colour;
+
+        /*Makes the resurrected piece the new head*/
+        resurrectedPiece->next = game->board[state->y][state->x].head;
+        game->board[state->y][state->x].head = resurrectedPiece;
+
+        /*Changes our counters for the stack height and the graveyard */
+        game->board[state->y][state->x].height++;
+        game->player[state->playerTurn].graveyardPieces--;
+
+        //Ensures our stack stays at size of 5
+        trimStack(&game->board[state->y][state->x], &game->player[state->playerTurn]);
+        return true;
+    } else {
+        //TODO: OUTPUT MESSAGE SAYING YOU'RE NOT ALLOWED TO DO THAT YOU HAVE NO PIECES
+        printw("Now now bois");
+        return false;
+    }
 }
 
 void run_game(Game *game) {
@@ -197,6 +222,11 @@ void run_game(Game *game) {
                 //TODO: Build Graveyard and give the ability to move pieces from the graveyard.
                 // Suggestion: Add to the game state a counter to keep track of the number of pieces a player has in the graveyard
                 // Remember to keep stack of size 5
+                if (resurrectPiece(game, &state)) {
+                    updateGameState(&state);
+                    drawBoard(game->board, state);
+                    drawStack(&game->board[state.y][state.x]);
+                }
                 break;
             default:
                 break;

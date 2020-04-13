@@ -67,7 +67,7 @@ void init_board(square board[BOARD_SIZE][BOARD_SIZE]) {
 void init_player(Game *game, int playerNum) {
     promptName(game->player[playerNum].player_name, playerNum);
     game->player[playerNum].colour = playerNum == 0 ? RED : GREEN;//Sets player colour
-    game->player[playerNum].retainedPieces = 0;//Sets the number of own pieces captured to 0
+    game->player[playerNum].graveyardPieces = 0;//Sets the number of own pieces captured to 0
     game->player[playerNum].capturedPieces = 0;//Sets the number of pieces captured from the opponent to 0
 }
 
