@@ -43,7 +43,7 @@ bool checkValidLeft(GameState *state) {
 
 bool checkOwnedPlayer(Game *game, GameState *state) {
     if (game->board[state->y][state->x].head == NULL) {
-        /*TODO: Output message to box saying you're selecting a missing piece*/
+        displayMessage("You can't select a square with no pieces");
         return false;
     }
     if (game->board[state->y][state->x].head->colour == game->player[state->playerTurn].colour) {
@@ -52,19 +52,17 @@ bool checkOwnedPlayer(Game *game, GameState *state) {
         state->selectedY = state->y;
         return true;
     }
-    printw("You selected a piece that isn't your own! Player %d", state->playerTurn);
-    /*TODO: Output message to a box if you're selecting a piece that isn't your own*/
+    displayMessage("You can't select a piece that isn't yours!");
     return false;
 }
 
 bool validMove(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
-    /*Ensures you can't move to the same position*/
-    if (state.x == state.selectedX && state.y == state.selectedY)
-        return false;
     /*Ensures that you are within bounds*/
     int height = board[state.selectedY][state.selectedX].height;
     int numOfMoves = abs(state.selectedX - state.x) + abs(state.selectedY - state.y);
-    /*TODO: Output message to a box to state that the move is not valid*/
+    if (height < numOfMoves) {
+        displayMessage("You can't move that far!");
+    }
     return height >= numOfMoves;
 }
 
@@ -126,7 +124,6 @@ void updateGameState(GameState *state) {
     state->moveMade = true;
     /*Makes selected pieces invalid*/
     state->selected = false;
-    /*TODO: Output to text box the current players turn and their colour */
 }
 
 /*Resurrects a piece from a players graveyard*/
@@ -148,8 +145,7 @@ bool resurrectPiece(Game *game, GameState *state) {
         trimStack(&game->board[state->y][state->x], &game->player[state->playerTurn]);
         return true;
     } else {
-        //TODO: OUTPUT MESSAGE SAYING YOU'RE NOT ALLOWED TO DO THAT YOU HAVE NO PIECES
-        printw("Now now bois");
+        displayMessage("You don't have any pieces in your graveyard!");
         return false;
     }
 }
@@ -187,7 +183,6 @@ void run_game(Game *game) {
     }
     curNode->next = NULL;
     game->board[4][4].height = 6;*/
-
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
@@ -224,14 +219,17 @@ void run_game(Game *game) {
                 break;
             case 'f'  :
                 if (state.selected == true) {
-                    if (validMove(game->board, state)) {
+                    /*Ensures you can't move to the same position*/
+                    if (state.x == state.selectedX && state.y == state.selectedY) {
+                        state.selected = false;
+                        drawBoard(game->board, state);
+                    } else if (validMove(game->board, state)) {
                         printw("valid");
                         movePieces(game, &state);
                         updateGameState(&state);//Updates the current game state, used to switch players
                         drawBoard(game->board, state);
                         drawStack(&game->board[state.y][state.x]);
-                    } else
-                        printw("not valid");
+                    }
                 } else {
                     /*Checks if the piece is owned by the current player
                      * If so, it will highlight that piece and record the coordinates*/
@@ -257,6 +255,9 @@ void run_game(Game *game) {
 
 
     /*Goes through the process of deleting our board and stack windows*/
+    wclear(messageBox);
+    wrefresh(messageBox);
+    delwin(messageBox);
     wclear(playerStatus);
     wrefresh(playerStatus);
     delwin(playerStatus);

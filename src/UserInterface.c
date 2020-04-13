@@ -140,6 +140,12 @@ void displayPlayer(Player currentPlayer) {
     wrefresh(playerStatus);
 }
 
+void displayMessage(char *msg) {
+    wclear(messageBox);
+    wprintw(messageBox, "%s", msg);
+    wrefresh(messageBox);
+}
+
 void drawWinner(Player winner) {
     /*Gets screen Sizes*/
     int maxScreenX = getmaxx(stdscr);

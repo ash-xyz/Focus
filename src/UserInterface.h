@@ -25,6 +25,9 @@
 WINDOW *boardWin;
 WINDOW *stackWin;
 WINDOW *playerStatus;
+WINDOW *messageBox;
+
+void displayMessage(char *msg);
 
 void drawLogo();
 

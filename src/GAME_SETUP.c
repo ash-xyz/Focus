@@ -94,6 +94,7 @@ Game init_game() {
     stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 2) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
                       maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
     playerStatus = newwin(1, 50, LOGO_HEIGHT, maxScreenX / 2 - 50/2);
+    messageBox = newwin(1, 50, LOGO_HEIGHT+1, maxScreenX / 2 - 50/2);
     refresh();
     return game;
 }
