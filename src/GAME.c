@@ -91,12 +91,44 @@ void trimStack(square *s, Player *player) {
     }
 }
 
+void movePieces(Game *game, GameState *state) {
+    //TODO: Move Stack
+    int heightOfSource = game->board[state->selectedY][state->selectedX].height;
+
+    /*Finds the bottom of our source stack*/
+    piece_node *bottomOfSource = game->board[state->selectedY][state->selectedX].head;
+    for (int i = heightOfSource; i > 1; i--) {
+        bottomOfSource = bottomOfSource->next;
+    }
+    /*Connects the bottom of our source with the top of our destination*/
+    bottomOfSource->next = game->board[state->y][state->x].head;
+    /*Makes our source head the new destination head*/
+    game->board[state->y][state->x].head = game->board[state->selectedY][state->selectedX].head;
+    /*Sets our source to NULL*/
+    set_empty(&game->board[state->selectedY][state->selectedX]);
+
+    //Change our game height
+    game->board[state->y][state->x].height += heightOfSource;
+
+    //Ensures our stack stays at size of 5
+    trimStack(&game->board[state->y][state->x], &game->player[state->playerTurn]);
+}
 void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
     state.player1Top = state.player2Top = 18;
     state.playerTurn = 0;
-    
+
+    /*TODO: REMOVE LATER; USED FOR TESTING*/
+    piece_node *curNode = game->board[4][4].head;
+    for (int i = 0; i < 5; i++) {
+        curNode->next = (piece_node *) malloc(sizeof(piece_node));
+        curNode = curNode->next;
+        curNode->colour = RED; //i % 2 == 0 ? RED : GREEN;
+    }
+    curNode->next = NULL;
+    game->board[4][4].height = 6;
+
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
@@ -133,9 +165,13 @@ void run_game(Game *game) {
                 if (state.selected == true) {
                     if (validMove(game->board, state)) {
                         printw("valid");
-                        //TODO: move piece if it's valid,
-                        //TODO: alter number of player tops, update number of player captures etc.
-                        //TODO: change player turn
+                        movePieces(game, &state);
+                        drawBoard(game->board, state);
+                        drawStack(&game->board[state.y][state.x]);
+                        //TODO: Function updateGameState with the following features:
+                        //TODO: Alter number of player tops;
+                        //TODO: Change player turn;
+                        //TODO: Change Game State for selected pieces
                     } else
                         printw("not valid");
                 } else {
@@ -145,15 +181,12 @@ void run_game(Game *game) {
                         drawBoard(game->board, state);
                     }
                 }
-            case 'g':
-                trimStack(&game->board[state.y][state.x], &game->player[state.playerTurn]);
-                printw("Num of Pieces retained: %d Num Of pieces captured %d",
-                       game->player[state.playerTurn].retainedPieces, game->player[state.playerTurn].capturedPieces);
-                drawStack(&game->board[state.y][state.x]);
                 break;
+            case 'g':
                 //TODO: Build Graveyard and give the ability to move pieces from the graveyard.
                 // Suggestion: Add to the game state a counter to keep track of the number of pieces a player has in the graveyard
                 // Remember to keep stack of size 5
+                break;
             default:
                 break;
         }
