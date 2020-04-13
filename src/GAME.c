@@ -58,6 +58,10 @@ bool checkOwnedPlayer(Game *game, GameState *state) {
 }
 
 bool validMove(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
+    /*Ensures you can't move to the same position*/
+    if (state.x == state.selectedX && state.y == state.selectedY)
+        return false;
+    /*Ensures that you are within bounds*/
     int height = board[state.selectedY][state.selectedX].height;
     int numOfMoves = abs(state.selectedX - state.x) + abs(state.selectedY - state.y);
     /*TODO: Output message to a box to state that the move is not valid*/
@@ -92,7 +96,6 @@ void trimStack(square *s, Player *player) {
 }
 
 void movePieces(Game *game, GameState *state) {
-    //TODO: Move Stack
     int heightOfSource = game->board[state->selectedY][state->selectedX].height;
 
     /*Finds the bottom of our source stack*/
@@ -142,6 +145,7 @@ void run_game(Game *game) {
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
+        printw("PLayer  %d", state.playerTurn);
         switch (getch()) {
             case KEY_UP:
                 state.y--;
