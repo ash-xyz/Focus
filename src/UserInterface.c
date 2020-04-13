@@ -130,6 +130,16 @@ void drawStack(square *piece) {
     wrefresh(stackWin);
 }
 
+void displayPlayer(Player currentPlayer) {
+    wclear(playerStatus);
+    wprintw(playerStatus, "Player: %s, ", currentPlayer.player_name);
+    wattron(playerStatus, COLOR_PAIR(currentPlayer.colour));
+    wprintw(playerStatus, "Colour: ████,");
+    wattroff(playerStatus, COLOR_PAIR(currentPlayer.colour));
+    wprintw(playerStatus, "Grave Size: %d", currentPlayer.graveyardPieces);
+    wrefresh(playerStatus);
+}
+
 void drawWinner(Player winner) {
     /*Gets screen Sizes*/
     int maxScreenX = getmaxx(stdscr);

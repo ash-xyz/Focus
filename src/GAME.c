@@ -192,7 +192,7 @@ void run_game(Game *game) {
     drawStack(&game->board[state.y][state.x]);
     do {
         state.moveMade = false;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
-        printw("Player  %d", state.playerTurn);
+        displayPlayer(game->player[state.playerTurn]);
         switch (getch()) {
             case KEY_UP:
                 state.y--;
@@ -257,6 +257,9 @@ void run_game(Game *game) {
 
 
     /*Goes through the process of deleting our board and stack windows*/
+    wclear(playerStatus);
+    wrefresh(playerStatus);
+    delwin(playerStatus);
     wclear(boardWin);
     wrefresh(boardWin);
     delwin(boardWin);
