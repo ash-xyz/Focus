@@ -219,7 +219,7 @@ void run_game(Game *game) {
                 break;
             case 'f'  :
                 if (state.selected == true) {
-                    /*Ensures you can't move to the same position*/
+                    /*Unselects a piece*/
                     if (state.x == state.selectedX && state.y == state.selectedY) {
                         state.selected = false;
                         drawBoard(game->board, state);
