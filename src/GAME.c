@@ -113,10 +113,20 @@ void movePieces(Game *game, GameState *state) {
     //Ensures our stack stays at size of 5
     trimStack(&game->board[state->y][state->x], &game->player[state->playerTurn]);
 }
+
+/*Updates the game following a player move*/
+void updateGameState(GameState *state) {
+    /*Changes player turn*/
+    state->playerTurn++;
+    state->playerTurn %= 2;
+    /*Makes selected pieces invalid*/
+    state->selected = false;
+    /*TODO: Output to text box the current players turn and their colour */
+}
+
 void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
-    state.player1Top = state.player2Top = 18;
     state.playerTurn = 0;
 
     /*TODO: REMOVE LATER; USED FOR TESTING*/
@@ -166,12 +176,9 @@ void run_game(Game *game) {
                     if (validMove(game->board, state)) {
                         printw("valid");
                         movePieces(game, &state);
+                        updateGameState(&state);//Updates the current gamestate
                         drawBoard(game->board, state);
                         drawStack(&game->board[state.y][state.x]);
-                        //TODO: Function updateGameState with the following features:
-                        //TODO: Alter number of player tops;
-                        //TODO: Change player turn;
-                        //TODO: Change Game State for selected pieces
                     } else
                         printw("not valid");
                 } else {
@@ -190,8 +197,8 @@ void run_game(Game *game) {
             default:
                 break;
         }
-    } while (state.player2Top !=
-             0);//TODO: Implement wincondition, where graveyard pieces are 0 and they have no pieces they can move on the board
+    } while (state.x !=
+             -1);//TODO: Implement wincondition, where graveyard pieces are 0 and they have no pieces they can move on the board
 
     delwin(boardWin);
     delwin(stackWin);
