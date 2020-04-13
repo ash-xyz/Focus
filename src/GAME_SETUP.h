@@ -27,9 +27,9 @@ typedef enum square_type {
 
 typedef struct Player {
     char player_name[20];
-    int opponentPieces; //number of adversary's pieces captured
-    int numOfPieces; //number of own pieces kept
-    Colour colour;
+    int capturedPieces; //number of adversary's pieces captured;
+    int retainedPieces; //number of own pieces kept; Used for graveyard functionality
+    Colour colour;//Player color, let's them pick colors from the board
 } Player;
 
 /*Stack data structure based on a linked list*/
