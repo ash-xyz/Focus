@@ -8,7 +8,7 @@
 #include <ncurses.h>
 #include "GAME_SETUP.h"
 
-#define LOGO_HEIGHT 8
+#define LOGO_HEIGHT 10
 #define LOGO_WIDTH 50
 
 #define PROMPT_HEIGHT 12
@@ -32,5 +32,7 @@ void promptName(char playername[], int i);
 void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state);
 
 void drawStack(square *piece);
+
+void drawWinner(Player winner);
 
 #endif //FOCUS_USERINTERFACE_H

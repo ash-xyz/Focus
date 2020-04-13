@@ -129,3 +129,37 @@ void drawStack(square *piece) {
     }
     wrefresh(stackWin);
 }
+
+void drawWinner(Player winner) {
+    /*Gets screen Sizes*/
+    int maxScreenX = getmaxx(stdscr);
+    /*Declares screen*/
+    WINDOW *winScreen = newwin(19, 40, LOGO_HEIGHT + 1, maxScreenX / 2 - 20);
+    refresh();
+    wprintw(winScreen, "         o  o   o  o\n"
+                       "         |\\/ \\^/ \\/|\n"
+                       "         |,-------.|\n"
+                       "       ,-.(|)   (|),-.\n"
+                       "       \\_*._ ' '_.* _/\n"
+                       "        /`-.`--' .-'\\\n"
+                       "   ,--./    `---'    \\,--.\n"
+                       "   \\   |(  )     (  )|   /\n"
+                       "    \\  | ||       || |  /\n"
+                       "     \\ | /|\\     /|\\ | /\n"
+                       "     /  \\-._     _,-/  \\\n"
+                       "    //| \\\\  `---'  // |\\\\\n"
+                       "   /,-.,-.\\       /,-.,-.\\\n"
+                       "  o   o   o      o   o    o");
+    wprintw(winScreen, "\nCongratulations %s!!\n", winner.player_name);
+    wprintw(winScreen, "You're an absolute super star!\n"
+                       "You took %d pieces from your opponent!\n", winner.capturedPieces);
+    wprintw(winScreen, "All this ");
+    wattron(winScreen, COLOR_PAIR(winner.colour));
+    wprintw(winScreen, "████████");
+    wattroff(winScreen, COLOR_PAIR(winner.colour));
+    wprintw(winScreen, " coloured pieces");
+
+    wrefresh(winScreen);
+    getch();
+    delwin(winScreen);
+}

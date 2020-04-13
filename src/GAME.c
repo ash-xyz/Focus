@@ -253,9 +253,18 @@ void run_game(Game *game) {
         }
     } while (state.moveMade == false || continueGame(game,
                                                      state.playerTurn));
-    printw("HAHAH WE'VE WON");
-    getch();
+    updateGameState(&state);//Switches the turn to our winner
+
+
+    /*Goes through the process of deleting our board and stack windows*/
+    wclear(boardWin);
+    wrefresh(boardWin);
     delwin(boardWin);
+    wclear(stackWin);
+    wrefresh(stackWin);
     delwin(stackWin);
+
+    drawWinner(game->player[state.playerTurn]);//Draws a screen with our winner
+
     endwin();
 }
