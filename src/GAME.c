@@ -175,14 +175,14 @@ void run_game(Game *game) {
     state.x = state.y = 4;
     state.playerTurn = 0;
     /*TODO: REMOVE LATER; USED FOR TESTING*/
-    /*piece_node *curNode = game->board[4][4].head;
+    piece_node *curNode = game->board[4][4].head;
     for (int i = 0; i < 5; i++) {
         curNode->next = (piece_node *) malloc(sizeof(piece_node));
         curNode = curNode->next;
         curNode->colour = RED; //i % 2 == 0 ? RED : GREEN;
     }
     curNode->next = NULL;
-    game->board[4][4].height = 6;*/
+    game->board[4][4].height = 6;
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
@@ -224,7 +224,6 @@ void run_game(Game *game) {
                         state.selected = false;
                         drawBoard(game->board, state);
                     } else if (validMove(game->board, state)) {
-                        printw("valid");
                         movePieces(game, &state);
                         updateGameState(&state);//Updates the current game state, used to switch players
                         drawBoard(game->board, state);
@@ -254,19 +253,8 @@ void run_game(Game *game) {
     updateGameState(&state);//Switches the turn to our winner
 
 
-    /*Goes through the process of deleting our board and stack windows*/
-    wclear(messageBox);
-    wrefresh(messageBox);
-    delwin(messageBox);
-    wclear(playerStatus);
-    wrefresh(playerStatus);
-    delwin(playerStatus);
-    wclear(boardWin);
-    wrefresh(boardWin);
-    delwin(boardWin);
-    wclear(stackWin);
-    wrefresh(stackWin);
-    delwin(stackWin);
+    /*Deletes all our previously created windows*/
+    deleteWindows();
 
     drawWinner(game->player[state.playerTurn]);//Draws a screen with our winner
 

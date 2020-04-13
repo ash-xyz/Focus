@@ -41,4 +41,6 @@ void drawWinner(Player winner);
 
 void displayPlayer(Player currentPlayer);
 
+void deleteWindows();
+
 #endif //FOCUS_USERINTERFACE_H

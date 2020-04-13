@@ -146,6 +146,21 @@ void displayMessage(char *msg) {
     wrefresh(messageBox);
 }
 
+void deleteWindows()
+{
+    wclear(messageBox);
+    wrefresh(messageBox);
+    delwin(messageBox);
+    wclear(playerStatus);
+    wrefresh(playerStatus);
+    delwin(playerStatus);
+    wclear(boardWin);
+    wrefresh(boardWin);
+    delwin(boardWin);
+    wclear(stackWin);
+    wrefresh(stackWin);
+    delwin(stackWin);
+}
 void drawWinner(Player winner) {
     /*Gets screen Sizes*/
     int maxScreenX = getmaxx(stdscr);
