@@ -154,7 +154,8 @@ bool resurrectPiece(Game *game, GameState *state) {
     }
 }
 
-bool winCondition(Game *game, int playerTurn) {
+/*Tells us whether or not we should continue the game*/
+bool continueGame(Game *game, int playerTurn) {
     //If we have pieces in the graveyard than we can still play
     if (game->player[playerTurn].graveyardPieces > 0)
         return true;
@@ -250,7 +251,7 @@ void run_game(Game *game) {
             default:
                 break;
         }
-    } while (state.moveMade == false || winCondition(game,
+    } while (state.moveMade == false || continueGame(game,
                                                      state.playerTurn));
     printw("HAHAH WE'VE WON");
     getch();
