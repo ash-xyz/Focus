@@ -63,12 +63,8 @@ typedef struct GameState {
 
     /*Tells us which player turn it is, 0 for player 1, 1 for player 2*/
     int playerTurn;
-
-    /*Used for win condition*/
-    int player1Top;//Holds how many pieces player 1 has on top
-    int player2Top;//Holds how many pieces player 2 has on top
 } GameState;
 
 Game init_game();
-
+void set_empty(square *s);
 #endif //FOCUS_GAME_SETUP_H
