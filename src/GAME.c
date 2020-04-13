@@ -117,11 +117,13 @@ void movePieces(Game *game, GameState *state) {
     trimStack(&game->board[state->y][state->x], &game->player[state->playerTurn]);
 }
 
-/*Updates the game following a player move*/
+/*Updates the game following a player move, used to switch player turn*/
 void updateGameState(GameState *state) {
     /*Changes player turn*/
     state->playerTurn++;
     state->playerTurn %= 2;
+    /*Tells us that we have indeed made a move*/
+    state->moveMade = true;
     /*Makes selected pieces invalid*/
     state->selected = false;
     /*TODO: Output to text box the current players turn and their colour */
@@ -152,25 +154,44 @@ bool resurrectPiece(Game *game, GameState *state) {
     }
 }
 
+bool winCondition(Game *game, int playerTurn) {
+    //If we have pieces in the graveyard than we can still play
+    if (game->player[playerTurn].graveyardPieces > 0)
+        return true;
+
+    //Otherwise we check if there are still any pieces that we can move, if so that we can continue playing
+    Colour currentPlayerColour = game->player[playerTurn].colour;
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (game->board[i][j].type == VALID && game->board[i][j].head != NULL &&
+                game->board[i][j].head->colour == currentPlayerColour) {
+                return true;
+            }
+        }
+    }
+    //If we don't have any pieces in the graveyard and we can't move any pieces in the board, we have lost :(
+    return false;
+}
+
 void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
     state.playerTurn = 0;
-
     /*TODO: REMOVE LATER; USED FOR TESTING*/
-    piece_node *curNode = game->board[4][4].head;
+    /*piece_node *curNode = game->board[4][4].head;
     for (int i = 0; i < 5; i++) {
         curNode->next = (piece_node *) malloc(sizeof(piece_node));
         curNode = curNode->next;
         curNode->colour = RED; //i % 2 == 0 ? RED : GREEN;
     }
     curNode->next = NULL;
-    game->board[4][4].height = 6;
+    game->board[4][4].height = 6;*/
 
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
-        printw("PLayer  %d", state.playerTurn);
+        state.moveMade = false;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
+        printw("Player  %d", state.playerTurn);
         switch (getch()) {
             case KEY_UP:
                 state.y--;
@@ -205,7 +226,7 @@ void run_game(Game *game) {
                     if (validMove(game->board, state)) {
                         printw("valid");
                         movePieces(game, &state);
-                        updateGameState(&state);//Updates the current gamestate
+                        updateGameState(&state);//Updates the current game state, used to switch players
                         drawBoard(game->board, state);
                         drawStack(&game->board[state.y][state.x]);
                     } else
@@ -219,9 +240,7 @@ void run_game(Game *game) {
                 }
                 break;
             case 'g':
-                //TODO: Build Graveyard and give the ability to move pieces from the graveyard.
-                // Suggestion: Add to the game state a counter to keep track of the number of pieces a player has in the graveyard
-                // Remember to keep stack of size 5
+                /*Resurrects a piece from a players graveyard*/
                 if (resurrectPiece(game, &state)) {
                     updateGameState(&state);
                     drawBoard(game->board, state);
@@ -231,9 +250,10 @@ void run_game(Game *game) {
             default:
                 break;
         }
-    } while (state.x !=
-             -1);//TODO: Implement wincondition, where graveyard pieces are 0 and they have no pieces they can move on the board
-
+    } while (state.moveMade == false || winCondition(game,
+                                                     state.playerTurn));
+    printw("HAHAH WE'VE WON");
+    getch();
     delwin(boardWin);
     delwin(stackWin);
     endwin();

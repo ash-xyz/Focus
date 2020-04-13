@@ -57,6 +57,8 @@ typedef struct GameState {
     int x;//Holds the current x coordinate
     int y;//Holds the current y coordinate
 
+    bool moveMade;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
+
     bool selected;//Holds whether or not a piece has been selected
     int selectedX;//Holds the current selected X piece
     int selectedY;//Holds the current selected Y piece
@@ -66,5 +68,7 @@ typedef struct GameState {
 } GameState;
 
 Game init_game();
+
 void set_empty(square *s);
+
 #endif //FOCUS_GAME_SETUP_H
