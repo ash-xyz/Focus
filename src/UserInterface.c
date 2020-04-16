@@ -2,6 +2,7 @@
 // Created by ashraf on 25/03/2020.
 //
 #include "UserInterface.h"
+#include <string.h>
 
 void drawLogo() {
     int maxScreenX = getmaxx(stdscr);
@@ -66,7 +67,7 @@ void colorCell(WINDOW *win, int locY, int locX, Colour colour) {
 
 void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     wclear(boardWin);
-
+    wmove(boardWin, 0, 0);
     wprintw(boardWin,
             "                ╔═══════╦═══════╦═══════╦═══════╗                "
             "                ║       ║       ║       ║       ║                "
@@ -118,6 +119,7 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
 
 void drawStack(square *piece) {
     wclear(stackWin);
+    wmove(boardWin, 0, 0);
     box(stackWin, 0, 0);
     piece_node *pointer = piece->head;
 
@@ -132,22 +134,26 @@ void drawStack(square *piece) {
 
 void displayPlayer(Player currentPlayer) {
     wclear(playerStatus);
-    wprintw(playerStatus, "Player: %s, ", currentPlayer.player_name);
+    int startOfString = INFOBOX_WIDTH / 2 - (38 + strlen(currentPlayer.player_name)) / 2; //Calculates where to place our string in the window so that it's centered
+
+    mvwprintw(playerStatus, 0, startOfString, "Player: %s, ", currentPlayer.player_name);
     wattron(playerStatus, COLOR_PAIR(currentPlayer.colour));
     wprintw(playerStatus, "Colour: ████,");
     wattroff(playerStatus, COLOR_PAIR(currentPlayer.colour));
     wprintw(playerStatus, "Grave Size: %d", currentPlayer.graveyardPieces);
+
     wrefresh(playerStatus);
 }
 
 void displayMessage(char *msg) {
     wclear(messageBox);
-    wprintw(messageBox, "%s", msg);
+    int startOfString =
+            INFOBOX_WIDTH / 2 - strlen(msg) / 2; // Calculates where to place the message so that it's centered
+    mvwprintw(messageBox, 0, startOfString, "%s", msg);//Prints string to our messageBox window
     wrefresh(messageBox);
 }
 
-void deleteWindows()
-{
+void deleteWindows() {
     wclear(messageBox);
     wrefresh(messageBox);
     delwin(messageBox);
@@ -161,6 +167,7 @@ void deleteWindows()
     wrefresh(stackWin);
     delwin(stackWin);
 }
+
 void drawWinner(Player winner) {
     /*Gets screen Sizes*/
     int maxScreenX = getmaxx(stdscr);
