@@ -20,6 +20,10 @@
 #define STACK_WIDTH 10
 #define STACK_HEIGHT 15
 
+/*Used for the player and msg boxes*/
+#define INFOBOX_HEIGHT 1
+#define INFOBOX_WIDTH 50
+
 /*Global Variables that contain the windows for our board and stack*/
 /*Initialised in GAME_SETUP.c, game_int*/
 WINDOW *boardWin;
