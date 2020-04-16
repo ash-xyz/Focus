@@ -5,6 +5,7 @@
 #include "UserInterface.h"
 #include <stdlib.h>
 
+/*Checks if an upward move is valid*/
 bool checkValidUp(GameState *state) {
     if (state->y < 0 || (state->y == 0 && (state->x == 1 || state->x == 6)) ||
         (state->y == 1 && (state->x == 0 || state->x == 7))) {
@@ -13,7 +14,7 @@ bool checkValidUp(GameState *state) {
     }
     return true;
 }
-
+/*Checks if a downward move is valid*/
 bool checkValidDown(GameState *state) {
     if (state->y > 7 || (state->y == 7 && (state->x == 1 || state->x == 6)) ||
         (state->y == 6 && (state->x == 0 || state->x == 7))) {
@@ -22,7 +23,7 @@ bool checkValidDown(GameState *state) {
     }
     return true;
 }
-
+/*Checks if a rightward move is valid*/
 bool checkValidRight(GameState *state) {
     if (state->x > 7 || (state->x == 7 && (state->y == 1 || state->y == 6)) ||
         (state->x == 6 && (state->y == 0 || state->y == 7))) {
@@ -32,6 +33,7 @@ bool checkValidRight(GameState *state) {
     return true;
 }
 
+/*Checks if a leftward move is valid*/
 bool checkValidLeft(GameState *state) {
     if (state->x < 0 || (state->x == 0 && (state->y == 1 || state->y == 6)) ||
         (state->x == 1 && (state->y == 0 || state->y == 7))) {
@@ -41,6 +43,7 @@ bool checkValidLeft(GameState *state) {
     return true;
 }
 
+/*Checks if a selected piece is owned by the player*/
 bool checkOwnedPlayer(Game *game, GameState *state) {
     if (game->board[state->y][state->x].head == NULL) {
         displayMessage("You can't select a square with no pieces");
@@ -56,6 +59,7 @@ bool checkOwnedPlayer(Game *game, GameState *state) {
     return false;
 }
 
+/*Checks if a piece move is valid(within bounds)*/
 bool validMove(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     /*Ensures that you are within bounds*/
     int height = board[state.selectedY][state.selectedX].height;
@@ -93,6 +97,7 @@ void trimStack(square *s, Player *player) {
     }
 }
 
+/*Moves the the stack in one board from one position to another*/
 void movePieces(Game *game, GameState *state) {
     int heightOfSource = game->board[state->selectedY][state->selectedX].height;
 
@@ -175,14 +180,14 @@ void run_game(Game *game) {
     state.x = state.y = 4;
     state.playerTurn = 0;
     /*TODO: REMOVE LATER; USED FOR TESTING*/
-    piece_node *curNode = game->board[4][4].head;
+   /* piece_node *curNode = game->board[4][4].head;
     for (int i = 0; i < 5; i++) {
         curNode->next = (piece_node *) malloc(sizeof(piece_node));
         curNode = curNode->next;
         curNode->colour = RED; //i % 2 == 0 ? RED : GREEN;
     }
     curNode->next = NULL;
-    game->board[4][4].height = 6;
+    game->board[4][4].height = 6;*/
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
@@ -251,8 +256,7 @@ void run_game(Game *game) {
     } while (state.moveMade == false || continueGame(game,
                                                      state.playerTurn));
     updateGameState(&state);//Switches the turn to our winner
-
-
+    
     /*Deletes all our previously created windows*/
     deleteWindows();
 
