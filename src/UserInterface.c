@@ -21,6 +21,49 @@ void drawLogo() {
     wrefresh(logo);
 }
 
+void drawRules() {
+    int maxScreenX = getmaxx(stdscr);
+    WINDOW *ruleWin = newwin(BOARD_HEIGHT, 69, 0, maxScreenX / 2 - 69 / 2);
+    refresh();
+    wprintw(ruleWin,
+            "     _______________________________________________________\n"
+            "    /\\                                                      \\\n"
+            "(O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)\n"
+            "    \\/''''''''''''''''''''''''''''''''''''''''''''''''''''''/\n"
+            "     )                   ___      _                         )\n"
+            "    (                   | _ \\_  _| |___ ___                (\n"
+            "     )                  |   / || | / -_|_-<                 )\n"
+            "    (                   |_|_\\\\_,_|_\\___/__/                (\n"
+            "                                                            \n"
+            "     )                     How to play:                     )\n"
+            "    (              Use the arrow keys to move              (\n"
+            "     )    Press 'f' to select, unselect and place a piece   )\n"
+            "    (   Press 'g' to resurrect a piece from your graveyard (\n"
+            "\n"
+            "     )   A stack can be moved if you own the topmost piece  )\n"
+            "    (         When a stack lands on another stack,         (\n"
+            "     )                the two stacks merge.                 )\n"
+            "    (     If the new stack contains more than 5 pieces,    (\n"
+            "     )            the bottom pieces are removed.            )\n"
+            "\n"
+            "    (         If a player's own piece is removed,          (\n"
+            "     )   they are kept in a player's graveyard and may be   )\n"
+            "    ( placed on the board later in lieu of moving a stack. (\n"
+            "     )                                                      )\n"
+            "\n"
+            "    (   The last player who is able to move a stack wins.  (\n"
+            "     )          Press 'h' to read the rules again.          )\n"
+            "    (              Press any key to CONTINUE               (\n"
+            "    /\\''''''''''''''''''''''''''''''''''''''''''''''''''''''\\    \n"
+            "(O)===)><><><><><><><><><><><><><><><><><><><><><><><><><><><)==(O)\n"
+            "    \\/______________________________________________________/");
+    wrefresh(ruleWin);
+    getch();
+    werase(ruleWin);
+    wrefresh(ruleWin);
+    delwin(ruleWin);
+}
+
 void promptName(char playername[], int i) {
 
     /*Gets screen Sizes*/
@@ -134,7 +177,8 @@ void drawStack(square *piece) {
 
 void displayPlayer(Player currentPlayer) {
     wclear(playerStatus);
-    int startOfString = INFOBOX_WIDTH / 2 - (38 + strlen(currentPlayer.player_name)) / 2; //Calculates where to place our string in the window so that it's centered
+    int startOfString = INFOBOX_WIDTH / 2 - (38 + strlen(currentPlayer.player_name)) /
+                                            2; //Calculates where to place our string in the window so that it's centered
 
     mvwprintw(playerStatus, 0, startOfString, "Player: %s, ", currentPlayer.player_name);
     wattron(playerStatus, COLOR_PAIR(currentPlayer.colour));

@@ -250,6 +250,11 @@ void run_game(Game *game) {
                     drawStack(&game->board[state.y][state.x]);
                 }
                 break;
+            case 'h':
+                /*TODO: SORT OUT CLEARING AND REDRAWING THE BOARD*/
+                drawRules();
+                drawBoard(game->board, state);
+                drawStack(&game->board[state.y][state.x]);
             default:
                 break;
         }

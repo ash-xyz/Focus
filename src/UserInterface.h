@@ -35,6 +35,8 @@ void displayMessage(char *msg);
 
 void drawLogo();
 
+void drawRules();
+
 void promptName(char playername[], int i);
 
 void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state);

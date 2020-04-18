@@ -81,6 +81,7 @@ Game init_game() {
     init_pair(RED, COLOR_RED, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
     init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
+    drawRules();
     drawLogo();//Draws Logo onto the screen
     Game game;
     init_board(game.board);
