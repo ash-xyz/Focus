@@ -252,7 +252,7 @@ void run_game(Game *game) {
                 break;
             case 'h':
                 /*TODO: SORT OUT CLEARING AND REDRAWING THE BOARD*/
-                drawRules();
+                displayRules();
                 drawBoard(game->board, state);
                 drawStack(&game->board[state.y][state.x]);
             default:

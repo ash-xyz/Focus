@@ -59,6 +59,7 @@ void drawRules() {
             "    \\/______________________________________________________/");
     wrefresh(ruleWin);
     getch();
+
     werase(ruleWin);
     wrefresh(ruleWin);
     delwin(ruleWin);
@@ -244,4 +245,12 @@ void drawWinner(Player winner) {
     wrefresh(winScreen);
     getch();
     delwin(winScreen);
+}
+void displayRules() {
+    werase(boardWin);
+    werase(stackWin);
+    wrefresh(boardWin);
+    wrefresh(stackWin);
+    drawRules();
+    drawLogo();
 }
