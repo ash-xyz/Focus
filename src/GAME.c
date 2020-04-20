@@ -179,48 +179,29 @@ void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
     state.playerTurn = 0;
-    /*TODO: REMOVE LATER; USED FOR TESTING*/
-   /* piece_node *curNode = game->board[4][4].head;
-    for (int i = 0; i < 5; i++) {
-        curNode->next = (piece_node *) malloc(sizeof(piece_node));
-        curNode = curNode->next;
-        curNode->colour = RED; //i % 2 == 0 ? RED : GREEN;
-    }
-    curNode->next = NULL;
-    game->board[4][4].height = 6;*/
+
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
     do {
         state.moveMade = false;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
+        bool redraw = false;
         displayPlayer(game->player[state.playerTurn]);
         switch (getch()) {
             case KEY_UP:
                 state.y--;
-                if (checkValidUp(&state)) {
-                    drawBoard(game->board, state);
-                    drawStack(&game->board[state.y][state.x]);
-                }
+                redraw = checkValidUp(&state);
                 break;
             case KEY_DOWN:
                 state.y++;
-                if (checkValidDown(&state)) {
-                    drawBoard(game->board, state);
-                    drawStack(&game->board[state.y][state.x]);
-                }
+                redraw = checkValidDown(&state);
                 break;
             case KEY_LEFT:
                 state.x--;
-                if (checkValidLeft(&state)) {
-                    drawBoard(game->board, state);
-                    drawStack(&game->board[state.y][state.x]);
-                }
+                redraw = checkValidLeft(&state);
                 break;
             case KEY_RIGHT:
                 state.x++;
-                if (checkValidRight(&state)) {
-                    drawBoard(game->board, state);
-                    drawStack(&game->board[state.y][state.x]);
-                }
+                redraw = checkValidRight(&state);
                 break;
             case 'f'  :
                 if (state.selected == true) {
@@ -231,8 +212,7 @@ void run_game(Game *game) {
                     } else if (validMove(game->board, state)) {
                         movePieces(game, &state);
                         updateGameState(&state);//Updates the current game state, used to switch players
-                        drawBoard(game->board, state);
-                        drawStack(&game->board[state.y][state.x]);
+                        redraw = true;
                     }
                 } else {
                     /*Checks if the piece is owned by the current player
@@ -246,22 +226,23 @@ void run_game(Game *game) {
                 /*Resurrects a piece from a players graveyard*/
                 if (resurrectPiece(game, &state)) {
                     updateGameState(&state);
-                    drawBoard(game->board, state);
-                    drawStack(&game->board[state.y][state.x]);
+                    redraw = true;
                 }
                 break;
             case 'h':
-                /*TODO: SORT OUT CLEARING AND REDRAWING THE BOARD*/
                 displayRules();
-                drawBoard(game->board, state);
-                drawStack(&game->board[state.y][state.x]);
+                redraw = true;
             default:
                 break;
+        }
+        if (redraw) {
+            drawBoard(game->board, state);
+            drawStack(&game->board[state.y][state.x]);
         }
     } while (state.moveMade == false || continueGame(game,
                                                      state.playerTurn));
     updateGameState(&state);//Switches the turn to our winner
-    
+
     /*Deletes all our previously created windows*/
     deleteWindows();
 
