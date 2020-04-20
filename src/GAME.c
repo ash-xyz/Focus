@@ -121,7 +121,7 @@ void movePieces(Game *game, GameState *state) {
 }
 
 /*Updates the game following a player move, used to switch player turn*/
-void updateGameState(GameState *state) {
+void updateGameState(GameState *state, Game *game) {
     /*Changes player turn*/
     state->playerTurn++;
     state->playerTurn %= 2;
@@ -129,6 +129,8 @@ void updateGameState(GameState *state) {
     state->moveMade = true;
     /*Makes selected pieces invalid*/
     state->selected = false;
+    /*Updates the player turn visuals*/
+    displayPlayer(game->player[state->playerTurn]);
 }
 
 /*Resurrects a piece from a players graveyard*/
@@ -182,10 +184,10 @@ void run_game(Game *game) {
 
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
+    displayPlayer(game->player[state.playerTurn]);
     do {
         state.moveMade = false;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
         bool redraw = false;
-        displayPlayer(game->player[state.playerTurn]);
         switch (getch()) {
             case KEY_UP:
                 state.y--;
@@ -211,12 +213,11 @@ void run_game(Game *game) {
                         drawBoard(game->board, state);
                     } else if (validMove(game->board, state)) {
                         movePieces(game, &state);
-                        updateGameState(&state);//Updates the current game state, used to switch players
+                        updateGameState(&state, game);//Updates the current game state, used to switch players
                         redraw = true;
                     }
                 } else {
-                    /*Checks if the piece is owned by the current player
-                     * If so, it will highlight that piece and record the coordinates*/
+                    /*Checks if the selected piece is owned by the current player*/
                     if (checkOwnedPlayer(game, &state) == true) {
                         drawBoard(game->board, state);
                     }
@@ -225,12 +226,13 @@ void run_game(Game *game) {
             case 'g':
                 /*Resurrects a piece from a players graveyard*/
                 if (resurrectPiece(game, &state)) {
-                    updateGameState(&state);
+                    updateGameState(&state, game);
                     redraw = true;
                 }
                 break;
             case 'h':
                 displayRules();
+                displayPlayer(game->player[state.playerTurn]);
                 redraw = true;
             default:
                 break;
@@ -241,7 +243,7 @@ void run_game(Game *game) {
         }
     } while (state.moveMade == false || continueGame(game,
                                                      state.playerTurn));
-    updateGameState(&state);//Switches the turn to our winner
+    updateGameState(&state, game);//Switches the turn to our winner
 
     /*Deletes all our previously created windows*/
     deleteWindows();
