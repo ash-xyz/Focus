@@ -51,4 +51,6 @@ void displayPlayer(Player currentPlayer);
 
 void deleteWindows();
 
+void init_screens();
+
 #endif //FOCUS_USERINTERFACE_H

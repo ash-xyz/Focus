@@ -72,15 +72,7 @@ void init_player(Game *game, int playerNum) {
 }
 
 Game init_game() {
-    stdscr = initscr();
-    noecho();
-    cbreak();
-    start_color();
-    keypad(stdscr, true);
-
-    init_pair(RED, COLOR_RED, COLOR_BLACK);
-    init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
-    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
+    init_screens(); // Initialises our ncurses screen
     drawRules();
     drawLogo();//Draws Logo onto the screen
     Game game;
@@ -88,14 +80,5 @@ Game init_game() {
     for (int i = 0; i < PLAYER_NUM; ++i) {
         init_player(&game, i);
     }
-
-    /*Initialises our board and stack window */
-    int maxScreenX = getmaxx(stdscr);
-    boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 2, maxScreenX / 2 - BOARD_WIDTH / 2);
-    stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 2) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
-                      maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
-    playerStatus = newwin(INFOBOX_HEIGHT, 50, LOGO_HEIGHT, maxScreenX / 2 - INFOBOX_WIDTH / 2);
-    messageBox = newwin(INFOBOX_HEIGHT, 50, LOGO_HEIGHT + 1, maxScreenX / 2 - INFOBOX_WIDTH / 2);
-    refresh();
     return game;
 }
