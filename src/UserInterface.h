@@ -8,24 +8,6 @@
 #include <ncurses.h>
 #include "GAME_SETUP.h"
 
-#define LOGO_HEIGHT 9
-#define LOGO_WIDTH 50
-
-#define PROMPT_HEIGHT 12
-#define PROMPT_WIDTH 40
-
-#define BOARD_WIDTH 65
-#define BOARD_HEIGHT 33
-
-#define STACK_WIDTH 10
-#define STACK_HEIGHT 15
-
-/*Used for the player and msg boxes*/
-#define INFOBOX_HEIGHT 1
-#define INFOBOX_WIDTH 50
-
-
-
 void displayMessage(char *msg);
 
 void drawLogo();

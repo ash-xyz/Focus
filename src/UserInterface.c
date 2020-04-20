@@ -4,6 +4,25 @@
 #include "UserInterface.h"
 #include <string.h>
 
+#define LOGO_HEIGHT 9
+#define LOGO_WIDTH 50
+
+#define PROMPT_HEIGHT 12
+#define PROMPT_WIDTH 40
+
+#define BOARD_WIDTH 65
+#define BOARD_HEIGHT 33
+
+#define STACK_WIDTH 10
+#define STACK_HEIGHT 15
+
+/*Used for the player and msg boxes*/
+#define INFOBOX_HEIGHT 1
+#define INFOBOX_WIDTH 50
+
+#define RULE_WIDTH 68
+#define RULE_HEIGHT 31
+
 /*Global Variables that contain the windows for our board and stack*/
 WINDOW *boardWin;
 WINDOW *stackWin;
@@ -25,7 +44,7 @@ void drawLogo() {
 
 void drawRules() {
     int maxScreenX = getmaxx(stdscr);
-    WINDOW *ruleWin = newwin(BOARD_HEIGHT, 69, 0, maxScreenX / 2 - 69 / 2);
+    WINDOW *ruleWin = newwin(RULE_HEIGHT, RULE_WIDTH, 0, maxScreenX / 2 - RULE_WIDTH / 2);
     refresh();
     wprintw(ruleWin,
             "     _______________________________________________________\n"
