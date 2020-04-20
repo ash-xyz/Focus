@@ -4,12 +4,14 @@
 #include "UserInterface.h"
 #include <string.h>
 
+/*Global Variables that contain the windows for our board and stack*/
+WINDOW *boardWin;
+WINDOW *stackWin;
+WINDOW *playerStatus;
+WINDOW *messageBox;
+WINDOW *logo;
+
 void drawLogo() {
-    int maxScreenX = getmaxx(stdscr);
-
-    WINDOW *logo = newwin(LOGO_HEIGHT, LOGO_WIDTH, 0, maxScreenX / 2 - LOGO_WIDTH / 2);
-    refresh();
-
     wprintw(logo, " /$$$$$$$$                                     \n"
                   "| $$_____/                                     \n"
                   "| $$     /$$$$$$   /$$$$$$$ /$$   /$$  /$$$$$$$\n"
@@ -246,30 +248,35 @@ void drawWinner(Player winner) {
     getch();
     delwin(winScreen);
 }
+
 /*Initialises our ncurses screens*/
-void init_screens()
-{
+void init_screens() {
     stdscr = initscr();
     noecho();
     cbreak();
     start_color();
     keypad(stdscr, true);
 
-    init_pair(RED, COLOR_RED, COLOR_BLACK);
-    init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
-    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);
-    /*Initialises our board and stack window */
-    int maxScreenX = getmaxx(stdscr);
+    init_pair(RED, COLOR_RED, COLOR_BLACK);// Initialises the RED colour graphically
+    init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);//Initialises the GREEN colour graphically
+    init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);// Initialises the BLUE colour graphically
+
+    int maxScreenX = getmaxx(stdscr);//Gets the max width of our screen,
     boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 2, maxScreenX / 2 - BOARD_WIDTH / 2);
     stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 2) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
                       maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
     playerStatus = newwin(INFOBOX_HEIGHT, 50, LOGO_HEIGHT, maxScreenX / 2 - INFOBOX_WIDTH / 2);
     messageBox = newwin(INFOBOX_HEIGHT, 50, LOGO_HEIGHT + 1, maxScreenX / 2 - INFOBOX_WIDTH / 2);
+    logo = newwin(LOGO_HEIGHT, LOGO_WIDTH, 0, maxScreenX / 2 - LOGO_WIDTH / 2);
+
     refresh();
 }
+
 void displayRules() {
     werase(boardWin);
     werase(stackWin);
+    werase(logo);
+    wrefresh(logo);
     wrefresh(boardWin);
     wrefresh(stackWin);
     drawRules();

@@ -24,18 +24,11 @@
 #define INFOBOX_HEIGHT 1
 #define INFOBOX_WIDTH 50
 
-/*Global Variables that contain the windows for our board and stack*/
-/*Initialised in GAME_SETUP.c, game_int*/
-WINDOW *boardWin;
-WINDOW *stackWin;
-WINDOW *playerStatus;
-WINDOW *messageBox;
+
 
 void displayMessage(char *msg);
 
 void drawLogo();
-
-void drawRules();
 
 void displayRules(); // Deals with the functionality of clearing the screen in order to display the rules
 
