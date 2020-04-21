@@ -108,7 +108,7 @@ void movePieces(Game *game, GameState *state) {
             int nextPlayer = (state->playerTurn + 1) % 2;
             state->moveablePieces[nextPlayer]--;
         }
-        /*If the player has moved a piece into a stack they control, the number of moveable pieces they have decreases*/
+            /*If the player has moved a piece into a stack they control, the number of moveable pieces they have decreases*/
         else {
             state->moveablePieces[state->playerTurn]--;
         }
@@ -151,23 +151,19 @@ void updateGameState(GameState *state, Game *game) {
 bool resurrectPiece(Game *game, GameState *state) {
     /*Updates number of moveable pieces */
     /*If we place a piece in an empty square, the number of moveable pieces increases*/
-    if(game->board[state->y][state->x].head == NULL)
-    {
+    if (game->board[state->y][state->x].head == NULL) {
         state->moveablePieces[state->playerTurn]++;
         printw("First");
-    }
-    else
-    {
+    } else {
         /*If the receiving square is not owned by the player, we increase the  current player's moveable pieces and decrease the opponents*/
-        if(game->board[state->y][state->x].head->colour != game->player[state->playerTurn].colour)
-        {
+        if (game->board[state->y][state->x].head->colour != game->player[state->playerTurn].colour) {
             state->moveablePieces[state->playerTurn]++;
             int nextPlayer = (state->playerTurn + 1) % 2;
             state->moveablePieces[nextPlayer]--;
             printw("Second");
         }
     }
-    printw("Moves %d %d", state->moveablePieces[0],state->moveablePieces[1]);
+    printw("Moves %d %d", state->moveablePieces[0], state->moveablePieces[1]);
     /*Check if you have any graveyard pieces*/
     if (game->player[state->playerTurn].graveyardPieces > 0) {
         /*Initialises a piece of the players color*/
@@ -192,21 +188,14 @@ bool resurrectPiece(Game *game, GameState *state) {
 }
 
 /*Tells us whether or not we should continue the game*/
-bool continueGame(Game *game, int playerTurn) {
+bool continueGame(Game *game, GameState state) {
     //If we have pieces in the graveyard than we can still play
-    if (game->player[playerTurn].graveyardPieces > 0)
+    if (game->player[state.playerTurn].graveyardPieces > 0)
+        return true;
+    /*If there are any moveable pieces on the baord then the game continues*/
+    if(state.moveablePieces[state.playerTurn]>0)
         return true;
 
-    //Otherwise we check if there are still any pieces that we can move, if so that we can continue playing
-    Colour currentPlayerColour = game->player[playerTurn].colour;
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            if (game->board[i][j].type == VALID && game->board[i][j].head != NULL &&
-                game->board[i][j].head->colour == currentPlayerColour) {
-                return true;
-            }
-        }
-    }
     //If we don't have any pieces in the graveyard and we can't move any pieces in the board, we have lost :(
     return false;
 }
@@ -222,7 +211,7 @@ void run_game(Game *game) {
     displayPlayer(game->player[state.playerTurn]);
     do {
         state.moveMade = false;//Tells us whether a player has made a move, helps avoid computing the win condition a needless amount of times
-        bool redraw = false;
+        bool redraw = false;//Tells us whether or not to redraw the board and screen
         switch (getch()) {
             case KEY_UP:
                 state.y--;
@@ -277,7 +266,7 @@ void run_game(Game *game) {
             drawStack(&game->board[state.y][state.x]);
         }
     } while (state.moveMade == false || continueGame(game,
-                                                     state.playerTurn));
+                                                     state));
     updateGameState(&state, game);//Switches the turn to our winner
 
     /*Deletes all our previously created windows*/
