@@ -63,6 +63,9 @@ typedef struct GameState {
     int selectedX;//Holds the current selected X piece
     int selectedY;//Holds the current selected Y piece
 
+    /*Tells us the number of pieces each player can move*/
+    int moveablePieces[PLAYER_NUM];
+
     /*Tells us which player turn it is, 0 for player 1, 1 for player 2*/
     int playerTurn;
 } GameState;
