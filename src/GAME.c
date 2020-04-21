@@ -99,8 +99,22 @@ void trimStack(square *s, Player *player) {
 
 /*Moves the the stack in one board from one position to another*/
 void movePieces(Game *game, GameState *state) {
-    int heightOfSource = game->board[state->selectedY][state->selectedX].height;
+    /*Updates the number of moveable pieces*/
+    /*If the receiving square is empty, there is no change in moveable pieces*/
+    if (game->board[state->y][state->x].head != NULL) {
+        /*If the receiving square is a different colour than the source square, the next player has less available pieces to move*/
+        if (game->board[state->selectedY][state->selectedX].head->colour !=
+            game->board[state->y][state->x].head->colour) {
+            int nextPlayer = (state->playerTurn + 1) % 2;
+            state->moveablePieces[nextPlayer]--;
+        }
+        /*If the player has moved a piece into a stack they control, the number of moveable pieces they have decreases*/
+        else {
+            state->moveablePieces[state->playerTurn]--;
+        }
+    }
 
+    int heightOfSource = game->board[state->selectedY][state->selectedX].height;
     /*Finds the bottom of our source stack*/
     piece_node *bottomOfSource = game->board[state->selectedY][state->selectedX].head;
     for (int i = heightOfSource; i > 1; i--) {
@@ -181,6 +195,7 @@ void run_game(Game *game) {
     GameState state;
     state.x = state.y = 4;
     state.playerTurn = 0;
+    state.moveablePieces[0] = state.moveablePieces[1] = 18; //Initialises the number of moveable pieces for each player
 
     drawBoard(game->board, state);
     drawStack(&game->board[state.y][state.x]);
