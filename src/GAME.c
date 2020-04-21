@@ -149,6 +149,26 @@ void updateGameState(GameState *state, Game *game) {
 
 /*Resurrects a piece from a players graveyard*/
 bool resurrectPiece(Game *game, GameState *state) {
+    /*Updates number of moveable pieces */
+    /*If we place a piece in an empty square, the number of moveable pieces increases*/
+    if(game->board[state->y][state->x].head == NULL)
+    {
+        state->moveablePieces[state->playerTurn]++;
+        printw("First");
+    }
+    else
+    {
+        /*If the receiving square is not owned by the player, we increase the  current player's moveable pieces and decrease the opponents*/
+        if(game->board[state->y][state->x].head->colour != game->player[state->playerTurn].colour)
+        {
+            state->moveablePieces[state->playerTurn]++;
+            int nextPlayer = (state->playerTurn + 1) % 2;
+            state->moveablePieces[nextPlayer]--;
+            printw("Second");
+        }
+    }
+    printw("Moves %d %d", state->moveablePieces[0],state->moveablePieces[1]);
+    /*Check if you have any graveyard pieces*/
     if (game->player[state->playerTurn].graveyardPieces > 0) {
         /*Initialises a piece of the players color*/
         piece_node *resurrectedPiece = (piece_node *) malloc(sizeof(piece_node));
