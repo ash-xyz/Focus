@@ -12,6 +12,8 @@ void displayMessage(char *msg);
 
 void drawLogo();
 
+void drawRules();
+
 void displayRules(); // Deals with the functionality of clearing the screen in order to display the rules
 
 void promptName(char playername[], int i);
