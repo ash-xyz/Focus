@@ -121,8 +121,13 @@ void promptName(char playername[], int i) {
     delwin(promptWin);
 }
 
-void colorCell(WINDOW *win, int locY, int locX, Colour colour) {
+void colorCell(WINDOW *win, int locY, int locX, Colour colour, int height) {
+    /*Outputs height of stack in blue*/
+    wattron(win, COLOR_PAIR(BLUE));
+    mvwprintw(win, locY - 1, locX - 1, "%d", height);
+    wattroff(win, COLOR_PAIR(BLUE));
 
+    /*Outputs the top piece of colour*/
     wattron(win, COLOR_PAIR(colour));
     for (int i = 0; i < 3; i++) {
         mvwprintw(win, locY + i, locX, "█████");
@@ -174,13 +179,16 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     for (int locY = 0; locY < BOARD_SIZE; locY++) {
         for (int locX = 0; locX < BOARD_SIZE; locX++) {
             if (board[locY][locX].type == VALID && board[locY][locX].head != NULL) {
-                colorCell(boardWin, 1 + 4 * locY, 2 + 8 * locX, board[locY][locX].head->colour);
+                colorCell(boardWin, 1 + 4 * locY, 2 + 8 * locX, board[locY][locX].head->colour,
+                          board[locY][locX].height);
             }
         }
     }
-    colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK);// Colours the position our cursor is at
+    colorCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK,
+              board[state.y][state.x].height);// Colours the position our cursor is at
     if (state.selected == true) {
-        colorCell(boardWin, 1 + 4 * state.selectedY, 2 + 8 * state.selectedX, BLUE);
+        colorCell(boardWin, 1 + 4 * state.selectedY, 2 + 8 * state.selectedX, BLUE,
+                  board[state.selectedY][state.selectedX].height);
     }
     wrefresh(boardWin);
 }
