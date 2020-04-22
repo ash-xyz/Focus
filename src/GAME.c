@@ -193,7 +193,7 @@ bool continueGame(Game *game, GameState state) {
     if (game->player[state.playerTurn].graveyardPieces > 0)
         return true;
     /*If there are any moveable pieces on the baord then the game continues*/
-    if(state.moveablePieces[state.playerTurn]>0)
+    if (state.moveablePieces[state.playerTurn] > 0)
         return true;
 
     //If we don't have any pieces in the graveyard and we can't move any pieces in the board, we have lost :(
