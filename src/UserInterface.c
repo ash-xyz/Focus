@@ -122,13 +122,12 @@ void promptName(char playername[], int i) {
 }
 
 void colorCell(WINDOW *win, int locY, int locX, Colour colour, int height) {
-    /*Outputs height of stack in blue*/
-    wattron(win, COLOR_PAIR(BLUE));
-    mvwprintw(win, locY - 1, locX - 1, "%d", height);
-    wattroff(win, COLOR_PAIR(BLUE));
+    wattron(win, COLOR_PAIR(colour));
+    /*Outputs height of stack*/
+    mvwprintw(win, locY, locX - 1, "%d", height);
 
     /*Outputs the top piece of colour*/
-    wattron(win, COLOR_PAIR(colour));
+
     for (int i = 0; i < 3; i++) {
         mvwprintw(win, locY + i, locX, "█████");
     }
@@ -285,6 +284,7 @@ void init_screens() {
     noecho();
     cbreak();
     start_color();
+    curs_set(0);
     keypad(stdscr, true);
 
     init_pair(RED, COLOR_RED, COLOR_BLACK);// Initialises the RED colour graphically
