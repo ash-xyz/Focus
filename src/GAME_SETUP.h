@@ -10,7 +10,7 @@
 #define BOARD_SIZE 8
 #define PLAYER_NUM 2
 
-/*Defines a set of Colors users can choose from*/
+/*Defines a set of Colours users can choose from*/
 typedef enum {
     RED = 1,
     GREEN,
@@ -26,10 +26,10 @@ typedef enum square_type {
 } square_type;
 
 typedef struct Player {
-    char player_name[20];
+    char player_name[15]; // Stores the players name
     int capturedPieces; //number of adversary's pieces captured;
     int graveyardPieces; //number of own pieces kept; Used for graveyard functionality
-    Colour colour;//Player color, let's them pick colors from the board
+    Colour colour;//Player colour, let's them pick colours from the board
 } Player;
 
 /*Stack data structure based on a linked list*/
@@ -41,12 +41,14 @@ typedef struct piece_node {
 typedef struct square {
     /*marks the size of the stack*/
     int height;
+    /*Tells us whether the square is valid or not*/
     square_type type;
     /* marks top of the stack*/
     piece_node *head;
 
 } square;
 
+/*Stores the players and the games*/
 typedef struct Game {
     square board[BOARD_SIZE][BOARD_SIZE];
     Player player[PLAYER_NUM];

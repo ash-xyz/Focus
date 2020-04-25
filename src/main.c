@@ -5,8 +5,8 @@
 #include <locale.h>
 
 int main() {
-    setlocale(LC_ALL, "");
-    Game game = init_game();
-    run_game(&game);
+    setlocale(LC_ALL, "");//Used for unicode functionality
+    Game game = init_game();//Initialises our game
+    run_game(&game);//Runs the game
     return 0;
 }

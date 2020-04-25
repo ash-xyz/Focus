@@ -8,26 +8,26 @@
 #include <ncurses.h>
 #include "GAME_SETUP.h"
 
-void displayMessage(char *msg);
+void displayMessage(char *msg); // Displays a string to the screen, usually a warning
 
-void drawLogo();
+void drawLogo(); // Draws the Focus Logo to the screen
 
-void drawRules();
+void drawRules(); // Draws the Rules to the screen
 
 void displayRules(); // Deals with the functionality of clearing the screen in order to display the rules
 
-void promptName(char playername[], int i);
+void promptName(char playername[], int i); // Prompts the player for their name
 
-void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state);
+void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state); // Draws the board to the screen
 
-void drawStack(square *piece);
+void drawStack(square *piece); // Draws the stack of the current position
 
-void drawWinner(Player winner);
+void drawWinner(Player winner); // Draws the winner to the screen
 
-void displayPlayer(Player currentPlayer);
+void displayPlayer(Player currentPlayer); // Displays the winning player and their stats to the screen
 
-void deleteWindows();
+void deleteWindows(); // Functionality to clear and delete all the screens
 
-void init_screens();
+void init_screens(); // Initialises our ncurses screen
 
 #endif //FOCUS_USERINTERFACE_H

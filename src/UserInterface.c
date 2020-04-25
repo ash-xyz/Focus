@@ -30,6 +30,7 @@ WINDOW *playerStatus;
 WINDOW *messageBox;
 WINDOW *logo;
 
+/*Draws the Focus Logo to the screen*/
 void drawLogo() {
     wprintw(logo, " /$$$$$$$$                                     \n"
                   "| $$_____/                                     \n"
@@ -42,6 +43,7 @@ void drawLogo() {
     wrefresh(logo);
 }
 
+/*Creates a window to draw the rules to*/
 void drawRules() {
     int maxScreenX = getmaxx(stdscr);
     WINDOW *ruleWin = newwin(RULE_HEIGHT, RULE_WIDTH, 0, maxScreenX / 2 - RULE_WIDTH / 2);
@@ -86,6 +88,7 @@ void drawRules() {
     delwin(ruleWin);
 }
 
+/*Promps the player for their name*/
 void promptName(char playername[], int i) {
 
     /*Gets screen Sizes*/
@@ -101,33 +104,35 @@ void promptName(char playername[], int i) {
                        " \\_ |                            |.\n"
                        "    |      Enter your name:      |.\n"
                        "    |                            |.\n"
-                       "    |      ~~~~~~~~~~~~~~~~~     |.\n"
+                       "    |          ~~~~~~~~          |.\n"
                        "    |                            |.\n"
                        "    |   _________________________|___\n"
                        "    |  /                            /.\n"
                        "    \\_/____________________________/.", i + 1);
 
+    curs_set(1);// Turns on a cursor for the user to see where they are in the screen
+    echo(); // Turns on the ability for the user to see what they typed
+    wattron(promptWin, A_STANDOUT); // Makes the text the user enters standout
 
-    echo();
-    wattron(promptWin, A_STANDOUT);
+    mvwgetnstr(promptWin, 6, 15, playername, 8); // Takes input from the screen
 
-    mvwgetnstr(promptWin, 6, 11, playername, 19);
+    noecho(); // Turns off the ability for the user to see what they typed
+    wattroff(promptWin, A_STANDOUT); // Turns off standout feature
+    curs_set(0);//Turns off a cursor for the user to see where they are in the screen
 
-    noecho();
-    wattroff(promptWin, A_STANDOUT);
-
+    /*Deletes our window from the screen and memory*/
     werase(promptWin);
     wrefresh(promptWin);
     delwin(promptWin);
 }
 
+/*Colours the pieces in the baord*/
 void colourCell(WINDOW *win, int locY, int locX, Colour colour, int height) {
-    wattron(win, COLOR_PAIR(colour));
+
     /*Outputs height of stack*/
     mvwprintw(win, locY, locX - 1, "%d", height);
-
+    wattron(win, COLOR_PAIR(colour));
     /*Outputs the top piece of colour*/
-
     for (int i = 0; i < 3; i++) {
         mvwprintw(win, locY + i, locX, "█████");
     }
@@ -135,8 +140,9 @@ void colourCell(WINDOW *win, int locY, int locX, Colour colour, int height) {
 }
 
 void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
-    wclear(boardWin);
-    wmove(boardWin, 0, 0);
+    wclear(boardWin);//Clears the board screen
+    wmove(boardWin, 0, 0);//Moves the cursor to 0,0
+    /*Stores the template to our board*/
     const char *boardTemplate[] = {"                ╔═══════╦═══════╦═══════╦═══════╗                "
                                    "                ║       ║       ║       ║       ║                "
                                    "                ║       ║       ║       ║       ║                "
@@ -170,11 +176,12 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
                                    "                ║       ║       ║       ║       ║                "
                                    "                ║       ║       ║       ║       ║                "
                                    "                ╚═══════╩═══════╩═══════╩═══════╝                "};
+    /*Prints out the board line by line*/
     const int lineCount = sizeof(boardTemplate) / sizeof(boardTemplate[0]);
     for (int i = 0; i < lineCount; i++) {
         mvwprintw(boardWin, i, 0, boardTemplate[i]);
     }
-
+    /*Colours each piece in the board*/
     for (int locY = 0; locY < BOARD_SIZE; locY++) {
         for (int locX = 0; locX < BOARD_SIZE; locX++) {
             if (board[locY][locX].type == VALID && board[locY][locX].head != NULL) {
@@ -183,8 +190,10 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
             }
         }
     }
+    /*Colours the square the player is currently at*/
     colourCell(boardWin, 1 + 4 * state.y, 2 + 8 * state.x, COLOR_BLACK,
                board[state.y][state.x].height);// Colours the position our cursor is at
+    /*Colours the selected piece blue*/
     if (state.selected == true) {
         colourCell(boardWin, 1 + 4 * state.selectedY, 2 + 8 * state.selectedX, BLUE,
                    board[state.selectedY][state.selectedX].height);
@@ -192,12 +201,15 @@ void drawBoard(square board[BOARD_SIZE][BOARD_SIZE], GameState state) {
     wrefresh(boardWin);
 }
 
+/*Draws the stack of the current square*/
 void drawStack(square *piece) {
+    /*Clears teh stack window*/
     wclear(stackWin);
     wmove(boardWin, 0, 0);
-    box(stackWin, 0, 0);
-    piece_node *pointer = piece->head;
+    box(stackWin, 0, 0);// Draws a box around the window
 
+    /*Goes through the stack one by one and prints out each piece*/
+    piece_node *pointer = piece->head;
     for (int i = 2 * piece->height; i > 0; i -= 2) {
         wattron(stackWin, COLOR_PAIR(pointer->colour));
         mvwprintw(stackWin, STACK_HEIGHT - i, 1, "████████");
@@ -207,20 +219,24 @@ void drawStack(square *piece) {
     wrefresh(stackWin);
 }
 
+/*Displays current player*/
 void displayPlayer(Player currentPlayer) {
     wclear(playerStatus);
     int startOfString = INFOBOX_WIDTH / 2 - (38 + strlen(currentPlayer.player_name)) /
                                             2; //Calculates where to place our string in the window so that it's centered
 
-    mvwprintw(playerStatus, 0, startOfString, "Player: %s, ", currentPlayer.player_name);
+    mvwprintw(playerStatus, 0, startOfString, "Player: %s, ", currentPlayer.player_name); // Prints the player name
+    /*Prints the player colour*/
     wattron(playerStatus, COLOR_PAIR(currentPlayer.colour));
     wprintw(playerStatus, "Colour: ████,");
     wattroff(playerStatus, COLOR_PAIR(currentPlayer.colour));
+    /*Prints the number of pieces each player has in their graveyard*/
     wprintw(playerStatus, "Grave Size: %d", currentPlayer.graveyardPieces);
 
     wrefresh(playerStatus);
 }
 
+/*Displays a message, usually a warning to the screen*/
 void displayMessage(char *msg) {
     wclear(messageBox);
     int startOfString =
@@ -229,6 +245,7 @@ void displayMessage(char *msg) {
     wrefresh(messageBox);
 }
 
+/*Deletes and clears windows from the screen, Windows: messageBox, playerStatus, boardWin, stackWin*/
 void deleteWindows() {
     wclear(messageBox);
     wrefresh(messageBox);
@@ -250,6 +267,7 @@ void drawWinner(Player winner) {
     /*Declares screen*/
     WINDOW *winScreen = newwin(19, 40, LOGO_HEIGHT + 1, maxScreenX / 2 - 20);
     refresh();
+    /*Prints ascii art of a king frog*/
     wprintw(winScreen, "         o  o   o  o\n"
                        "         |\\/ \\^/ \\/|\n"
                        "         |,-------.|\n"
@@ -264,10 +282,12 @@ void drawWinner(Player winner) {
                        "    //| \\\\  `---'  // |\\\\\n"
                        "   /,-.,-.\\       /,-.,-.\\\n"
                        "  o   o   o      o   o    o");
+    /*Prints the details of the winning player*/
     wprintw(winScreen, "\nCongratulations %s!!\n", winner.player_name);
     wprintw(winScreen, "You're an absolute super star!\n"
                        "You took %d pieces from your opponent!\n", winner.capturedPieces);
     wprintw(winScreen, "All this ");
+    /*Prints the winning player colour*/
     wattron(winScreen, COLOR_PAIR(winner.colour));
     wprintw(winScreen, "████████");
     wattroff(winScreen, COLOR_PAIR(winner.colour));
@@ -280,18 +300,19 @@ void drawWinner(Player winner) {
 
 /*Initialises our ncurses screens*/
 void init_screens() {
-    stdscr = initscr();
-    noecho();
+    stdscr = initscr();//Initialises the large screen
+    noecho();//Turns off echoing(Printing anything the user enters)
     cbreak();
-    start_color();
-    curs_set(0);
-    keypad(stdscr, true);
+    start_color();//Starts color functionality for the user
+    curs_set(0);//Turns off the cursor
+    keypad(stdscr, true);// Allows for special character input, e.g KEY_UP
 
     init_pair(RED, COLOR_RED, COLOR_BLACK);// Initialises the RED colour graphically
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);//Initialises the GREEN colour graphically
     init_pair(BLUE, COLOR_BLUE, COLOR_BLACK);// Initialises the BLUE colour graphically
 
     int maxScreenX = getmaxx(stdscr);//Gets the max width of our screen,
+    /*Initialises our various screens*/
     boardWin = newwin(BOARD_HEIGHT, BOARD_WIDTH, LOGO_HEIGHT + 2, maxScreenX / 2 - BOARD_WIDTH / 2);
     stackWin = newwin(STACK_HEIGHT, STACK_WIDTH, (LOGO_HEIGHT + 2) + (BOARD_HEIGHT / 2 - STACK_HEIGHT / 2),
                       maxScreenX / 2 + BOARD_WIDTH / 2 + 2);
@@ -302,6 +323,7 @@ void init_screens() {
     refresh();
 }
 
+/*Clears the windows to make room for the Rules*/
 void displayRules() {
     werase(boardWin);
     werase(stackWin);
