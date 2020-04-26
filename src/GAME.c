@@ -209,6 +209,24 @@ bool continueGame(Game *game, GameState state) {
     return false;
 }
 
+// Frees any remaining pieces on the board
+void freePieces(square board[BOARD_SIZE][BOARD_SIZE]) {
+    /*Iterates through the board square by square */
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            /*Only frees valid pieces on the board*/
+            if (board[i][j].type == VALID) {
+                /*Goes through stack one by one to free pieces*/
+                while (board[i][j].head != NULL) {
+                    piece_node *curPiece = board[i][j].head;
+                    board[i][j].head = board[i][j].head->next;
+                    free(curPiece);
+                }
+            }
+        }
+    }
+}
+
 void run_game(Game *game) {
     /*Initialises a variable to store the current state of our game */
     GameState state;
@@ -294,6 +312,8 @@ void run_game(Game *game) {
 
     /*Deletes all our previously created windows*/
     deleteWindows();
+    /*Frees allocated memory for the pieces*/
+    freePieces(game->board);
     /*Draws the winner alongside their current info*/
     drawWinner(game->player[state.playerTurn]);//Draws a screen with our winner
     /*Ends ncurses screen*/
