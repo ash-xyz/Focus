@@ -128,9 +128,6 @@ void promptName(char playername[], int i) {
 
 /*Colours the pieces in the baord*/
 void colourCell(WINDOW *win, int locY, int locX, Colour colour, int height) {
-
-    /*Outputs height of stack*/
-    mvwprintw(win, locY, locX - 1, "%d", height);
     wattron(win, COLOR_PAIR(colour));
     /*Outputs the top piece of colour*/
     for (int i = 0; i < 3; i++) {
