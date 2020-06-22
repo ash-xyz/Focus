@@ -233,6 +233,8 @@ void run_game(Game *game) {
     state.x = state.y = 4; //Stores where the player is currently at
     state.playerTurn = 0; //Stores the player turn, 0 for player 1, 1 for player 2
     state.moveablePieces[0] = state.moveablePieces[1] = 18; //Stores the number of moveable pieces each player has
+    state.selectedX = state.selectedY = -1;
+    state.selected = false;
 
     /*Initially draws our UI*/
     drawBoard(game->board, state);
