@@ -2,8 +2,8 @@
 // Created by ashraf on 25/03/2020.
 //
 
-#ifndef FOCUS_USERINTERFACE_H
-#define FOCUS_USERINTERFACE_H
+#ifndef FOCUS_USER_INTERFACE_H
+#define FOCUS_USER_INTERFACE_H
 
 #include <ncurses.h>
 #include "GAME_SETUP.h"
@@ -30,4 +30,4 @@ void deleteWindows(); // Functionality to clear and delete all the screens
 
 void init_screens(); // Initialises our ncurses screen
 
-#endif //FOCUS_USERINTERFACE_H
+#endif //FOCUS_USER_INTERFACE_H

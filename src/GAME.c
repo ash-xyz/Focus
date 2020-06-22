@@ -2,7 +2,7 @@
 // Created by ashraf on 07/04/2020.
 //
 #include "GAME.h"
-#include "UserInterface.h"
+#include "USER_INTERFACE.h"
 #include <stdlib.h>
 
 /*Checks if an upward move is valid*/

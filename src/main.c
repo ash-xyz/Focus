@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "UserInterface.h"
+#include "USER_INTERFACE.h"
 #include "GAME_SETUP.h"
 #include "GAME.h"
 #include <locale.h>

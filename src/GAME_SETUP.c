@@ -3,7 +3,7 @@
 //
 #include "GAME_SETUP.h"
 #include <stdlib.h>
-#include "UserInterface.h"
+#include "USER_INTERFACE.h"
 
 /*
  * This file aims to contain utility functions for the Game.
