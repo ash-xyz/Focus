@@ -2,7 +2,7 @@
 Focus (Board Game) & Winner of Best Project
 [![asciicast](https://asciinema.org/a/xfSZIlrkSyhbYbSkXhlOcXpwF.svg)](https://asciinema.org/a/xfSZIlrkSyhbYbSkXhlOcXpwF)
 ### Introduction
-This is a game made for COMP10050 Software Engineering Project 1.
+This is a game made for [UCD's COMP10050 Software Engineering Project 1](https://sisweb.ucd.ie/usis/!W_HU_MENU.P_PUBLISH?p_tag=MODULE&MODULE=COMP10050).
 
 It's based on the [Focus Board Game](https://en.wikipedia.org/wiki/Focus_(board_game))
 
